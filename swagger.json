@@ -1,0 +1,203 @@
+{
+  "swagger": "2.0",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "info": {
+    "title": "On-Site Hold Request Service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v0.1/on-site-hold-requests": {
+      "post": {
+        "tags": [
+          "on-site-hold-requests"
+        ],
+        "summary": "Create on-site hold request",
+        "operationId": "createOnSiteHoldRequests",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "NewOnSiteHoldRequest",
+            "in": "body",
+            "description": "An object containing the details of the on-site hold request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewOnSiteHoldRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful hold creation",
+            "schema": {
+              "$ref": "#/definitions/OnSiteHoldRequest"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Generic server error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "api_auth": [
+              "openid",
+              "write:on-site-hold-request"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "NewOnSiteHoldRequest": {
+      "title": "NewOnSiteHoldRequest",
+      "type": "object",
+      "required": [
+        "record",
+        "patron"
+      ],
+      "properties": {
+        "nyplSource": {
+          "type": "string",
+          "example": "sierra-nypl",
+          "enum": [
+            "sierra-nypl"
+          ],
+          "default": "sierra-nypl"
+        },
+        "record": {
+          "description": "The item id",
+          "type": "string",
+          "example": "10011630"
+        },
+        "docDeliveryData": {
+          "$ref": "#/definitions/ElectronicDocumentData"
+        },
+        "patron": {
+          "type": "string",
+          "example": 6779366
+        },
+        "pickupLocation": {
+          "description": "The location code for delivery, if applicable",
+          "type": "string",
+          "example": "mal"
+        },
+        "neededBy": {
+          "description": "Date hold must be fulfilled by, as ISO 8601",
+          "type": "string",
+          "example": "2018-01-07T02:32:51Z"
+        },
+        "numberOfCopies": {
+          "type": "integer",
+          "example": 1,
+          "default": 1
+        }
+      }
+    },
+    "ElectronicDocumentData": {
+      "title": "ElectronicDocumentRequest",
+      "description": "Parameters for EDD request",
+      "type": "object",
+      "required": [
+        "emailAddress",
+        "startPage",
+        "endPage"
+      ],
+      "properties": {
+        "emailAddress": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "startPage": {
+          "type": "string",
+          "example": 100
+        },
+        "endPage": {
+          "type": "string",
+          "example": 150
+        },
+        "chapterTitle": {
+          "type": "string",
+          "example": "Chapter One",
+          "description": "Optional chapter name/number"
+        },
+        "author": {
+          "type": "string",
+          "example": "Anonymous",
+          "description": "Optional author name"
+        },
+        "issue": {
+          "type": "string",
+          "example": "Summer 2017",
+          "description": "Optional issue number"
+        },
+        "volume": {
+          "type": "string",
+          "example": 159,
+          "description": "Optional volume number"
+        },
+        "requestNotes": {
+          "type": "string",
+          "example": "Backup physical delivery requested.",
+          "description": "Optional catch-all field for additional instructions"
+        }
+      }
+    },
+    "OnSiteHoldRequest": {
+      "title": "OnSiteHoldRequest",
+      "type": "object",
+      "properties": {
+        "pickupLocation": {
+          "type": "string",
+          "example": "mal",
+          "description": "The pickup location (or EDD location) assigned the hold request"
+        },
+        "eddQueue": {
+          "type": "string",
+          "example": "sasb",
+          "description": "The name of the EDD processing queue (if EDD)"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string",
+          "example": "error_type"
+        },
+        "message": {
+          "type": "string",
+          "example": "Description of error"
+        },
+        "error": {
+          "type": "object"
+        },
+        "debugInfo": {
+          "type": "object"
+        }
+      },
+      "type": "object",
+      "title": "ErrorResponse"
+    }
+  }
+}
