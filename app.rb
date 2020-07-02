@@ -50,6 +50,10 @@ def handle_create_hold_request(event)
   $logger.debug "OnSiteHoldRequest.create #{params.to_json}"
 
   OnSiteHoldRequest.create params
+
+  {
+    statusCode: 201
+  }
 end
 
 def parse_body(event)

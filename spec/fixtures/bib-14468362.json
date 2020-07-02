@@ -1,0 +1,683 @@
+{
+  "data": {
+    "id": "14468362",
+    "nyplSource": "sierra-nypl",
+    "nyplType": "bib",
+    "updatedDate": "2017-01-30T21:51:07-05:00",
+    "createdDate": "2008-12-18T18:18:54-05:00",
+    "deletedDate": null,
+    "deleted": false,
+    "locations": [
+      {
+        "code": "scf",
+        "name": "Schomburg Center - Research & Reference"
+      },
+      {
+        "code": "mal",
+        "name": "SASB - Service Desk Rm 315"
+      }
+    ],
+    "suppressed": false,
+    "lang": {
+      "code": "eng",
+      "name": "English"
+    },
+    "title": "Reelection : William Jefferson Clinton as a native-son presidential candidate",
+    "author": "Walton, Hanes, Jr., 1941-2013.",
+    "materialType": {
+      "code": "a",
+      "value": "BOOK/TEXT"
+    },
+    "bibLevel": {
+      "code": "m",
+      "value": "MONOGRAPH"
+    },
+    "publishYear": 2000,
+    "catalogDate": "2000-03-31",
+    "country": {
+      "code": "nyu",
+      "name": "New York (State)"
+    },
+    "normTitle": "reelection william jefferson clinton as a native son presidential candidate",
+    "normAuthor": "walton hanes jr 1941 2013",
+    "standardNumbers": [
+      "0231115520",
+      "0231115539"
+    ],
+    "controlNumber": "41548434",
+    "fixedFields": {
+      "24": {
+        "label": "Language",
+        "value": "eng",
+        "display": "English"
+      },
+      "25": {
+        "label": "Skip",
+        "value": "0",
+        "display": null
+      },
+      "26": {
+        "label": "Location",
+        "value": "multi",
+        "display": null
+      },
+      "27": {
+        "label": "COPIES",
+        "value": "2",
+        "display": null
+      },
+      "28": {
+        "label": "Cat. Date",
+        "value": "2000-03-31",
+        "display": null
+      },
+      "29": {
+        "label": "Bib Level",
+        "value": "m",
+        "display": "MONOGRAPH"
+      },
+      "30": {
+        "label": "Material Type",
+        "value": "a",
+        "display": "BOOK/TEXT"
+      },
+      "31": {
+        "label": "Bib Code 3",
+        "value": "-",
+        "display": null
+      },
+      "80": {
+        "label": "Record Type",
+        "value": "b",
+        "display": null
+      },
+      "81": {
+        "label": "Record Number",
+        "value": "14468362",
+        "display": null
+      },
+      "83": {
+        "label": "Created Date",
+        "value": "2008-12-18T18:18:54Z",
+        "display": null
+      },
+      "84": {
+        "label": "Updated Date",
+        "value": "2017-01-30T21:51:07Z",
+        "display": null
+      },
+      "85": {
+        "label": "No. of Revisions",
+        "value": "5",
+        "display": null
+      },
+      "86": {
+        "label": "Agency",
+        "value": "1",
+        "display": null
+      },
+      "89": {
+        "label": "Country",
+        "value": "nyu",
+        "display": "New York (State)"
+      },
+      "98": {
+        "label": "PDATE",
+        "value": "2009-07-21T03:15:28Z",
+        "display": null
+      },
+      "107": {
+        "label": "MARC Type",
+        "value": " ",
+        "display": null
+      }
+    },
+    "varFields": [
+      {
+        "fieldTag": "a",
+        "marcTag": "100",
+        "ind1": "1",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Walton, Hanes,"
+          },
+          {
+            "tag": "c",
+            "content": "Jr.,"
+          },
+          {
+            "tag": "d",
+            "content": "1941-2013."
+          }
+        ]
+      },
+      {
+        "fieldTag": "c",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "JFE 00-4013"
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "600",
+        "ind1": "1",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Clinton, Bill,"
+          },
+          {
+            "tag": "d",
+            "content": "1946-"
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Elections"
+          },
+          {
+            "tag": "z",
+            "content": "Arkansas."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Voting"
+          },
+          {
+            "tag": "z",
+            "content": "Arkansas."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "African Americans"
+          },
+          {
+            "tag": "x",
+            "content": "Suffrage"
+          },
+          {
+            "tag": "z",
+            "content": "Arkansas."
+          }
+        ]
+      },
+      {
+        "fieldTag": "i",
+        "marcTag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "0231115520 (cloth : alk. paper)"
+          }
+        ]
+      },
+      {
+        "fieldTag": "i",
+        "marcTag": "020",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "0231115539 (pbk. : alk. paper)"
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "010",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "99032874"
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "(WaOLN)M290000217"
+          }
+        ]
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": "504",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Includes bibliographical references (p. [283]-294) and index."
+          }
+        ]
+      },
+      {
+        "fieldTag": "o",
+        "marcTag": "001",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "41548434",
+        "subfields": null
+      },
+      {
+        "fieldTag": "p",
+        "marcTag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "New York :"
+          },
+          {
+            "tag": "b",
+            "content": "Columbia University Press,"
+          },
+          {
+            "tag": "c",
+            "content": "c2000."
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "JFE 00-4013"
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "Sc E 01-825"
+          }
+        ]
+      },
+      {
+        "fieldTag": "r",
+        "marcTag": "300",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "xxxv, 308 p. :"
+          },
+          {
+            "tag": "b",
+            "content": "ill., maps ;"
+          },
+          {
+            "tag": "c",
+            "content": "24 cm."
+          }
+        ]
+      },
+      {
+        "fieldTag": "s",
+        "marcTag": "440",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Power, conflict, and democracy"
+          }
+        ]
+      },
+      {
+        "fieldTag": "t",
+        "marcTag": "245",
+        "ind1": "1",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Reelection :"
+          },
+          {
+            "tag": "b",
+            "content": "William Jefferson Clinton as a native-son presidential candidate /"
+          },
+          {
+            "tag": "c",
+            "content": "Hanes Walton, Jr."
+          }
+        ]
+      },
+      {
+        "fieldTag": "v",
+        "marcTag": "959",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": ".b60832885"
+          },
+          {
+            "tag": "b",
+            "content": "03-26-07"
+          },
+          {
+            "tag": "c",
+            "content": "02-23-00"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "003",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "OCoLC",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "005",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "20000330113431.4",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "008",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "990608s2000    nyuab    b    001 0 eng  cam4a ",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "015",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "GB99-V9772"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "040",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "DLC"
+          },
+          {
+            "tag": "c",
+            "content": "DLC"
+          },
+          {
+            "tag": "d",
+            "content": "UKM"
+          },
+          {
+            "tag": "d",
+            "content": "C#P"
+          },
+          {
+            "tag": "d",
+            "content": "NYP"
+          },
+          {
+            "tag": "d",
+            "content": "WaOLN"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "042",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "pcc"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "043",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "n-us-ar"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "049",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "NYPG"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "050",
+        "ind1": "0",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "JK5192"
+          },
+          {
+            "tag": "b",
+            "content": ".W35 2000"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "908",
+        "ind1": "0",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "JK5192"
+          },
+          {
+            "tag": "b",
+            "content": ".W35 2000"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "082",
+        "ind1": "0",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "324.9767/053"
+          },
+          {
+            "tag": "2",
+            "content": "21"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "946",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "m"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "947",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "fake-standard-number"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "997",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "hg"
+          },
+          {
+            "tag": "a",
+            "content": "sg"
+          },
+          {
+            "tag": "b",
+            "content": "03-31-00"
+          },
+          {
+            "tag": "c",
+            "content": "m"
+          },
+          {
+            "tag": "d",
+            "content": "a"
+          },
+          {
+            "tag": "e",
+            "content": "-"
+          },
+          {
+            "tag": "f",
+            "content": "eng"
+          },
+          {
+            "tag": "g",
+            "content": "nyu"
+          },
+          {
+            "tag": "h",
+            "content": "0"
+          }
+        ]
+      },
+      {
+        "fieldTag": "_",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "00000cam  22003854a 4500",
+        "subfields": null
+      }
+    ]
+  },
+  "count": 1,
+  "totalCount": 0,
+  "statusCode": 200,
+  "debugInfo": []
+}
