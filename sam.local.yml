@@ -8,7 +8,7 @@ Resources:
     Properties:
       Handler: app.handle_event
       Runtime: ruby2.7
-      Timeout: 10
+      Timeout: 60
       Environment:
         Variables:
           LOG_LEVEL: debug
@@ -20,6 +20,7 @@ Resources:
           NYPL_OAUTH_URL: https://isso.nypl.org/
           NYPL_OAUTH_ID: AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAGowaAYJKoZIhvcNAQcGoFswWQIBADBUBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDJgrQmkr7pQa4WSF1gIBEIAnLgWjuqFllMpCQWGT/eC/7n/pxFN87zaoJF19zCRHH/ulh4BICTZf
           NYPL_OAUTH_SECRET: AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAIcwgYQGCSqGSIb3DQEHBqB3MHUCAQAwcAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAx8ZuLftGsgDmOxxBICARCAQ3ZSNw6hWlqI73kLJcs8Zg3O13PKiATfXXDUvGFim/KolFmQDCsVp7JFF9Jg01U++KNtcGJiVev7z3OAPNXc3fqGp6k=
+          LIB_ANSWERS_DEFAULT_DESTINATION_EMAIL:
       Events:
         ApiCreateHoldRequestsPath:
           Type: Api

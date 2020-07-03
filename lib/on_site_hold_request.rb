@@ -67,6 +67,13 @@ class OnSiteHoldRequest
     $logger.debug "self.sierra_client.post \"patrons/#{patron_id}/holds/requests\", #{hold.to_json}"
     response = self.class.sierra_client.post "patrons/#{patron_id}/holds/requests", hold
     $logger.debug "self.sierra_client.post response: #{response.code} #{response.body}"
+
+    if response.error?
+      if response.body && response.body['description'].include?('This record is not available')
+        raise SierraRecordUnavailableError, "Item unavailable in Sierra for patron #{patron_id}, item #{@data['record']}, pickup #{pickup_location}: #{response.code}: #{response.body}"
+      end
+      raise SierraError, "Error placing Sierra hold for patron #{patron_id}, item #{@data['record']}, pickup #{pickup_location}: #{response.code}: #{response.body}"
+    end
   end
 
   def create_libanswers_job
@@ -76,10 +83,25 @@ class OnSiteHoldRequest
   end
 
   def self.create(params = {})
-    raise ParameterError, 'record is required' unless params['record']
-    raise ParameterError, 'patron is required' unless params['patron']
+    [ 'patron', 'record' ].each do |param|
+      # Ensure set
+      raise ParameterError, "#{param} is required" unless params[param]
+      # Ensure numeric:
+      raise ParameterError, "#{param} isn't numeric" unless params[param].to_i.to_s == params[param].to_s
+    end
 
-    self.new(params).create
+    data = params.merge({
+      'record' => params['record'].to_i,
+      'patron' => params['patron'].to_i
+    })
+
+    begin
+      self.new(data).create
+    rescue SierraRecordUnavailableError => e
+      raise ParameterError, "Item not available: #{data['record']}"
+    rescue SierraError => e
+      raise InternalError, "Internal error: Unspecified error placing hold"
+    end
   end
 
   def self.sierra_client

@@ -1,0 +1,10 @@
+EDD Hold Request
+
+<%
+  @email_data.each do |(category, properties)|
+%>
+<%= category %>
+
+<% properties.each do |(label, value)| %><%= label %>: <%= value %>
+<% end %>
+<% end %>
