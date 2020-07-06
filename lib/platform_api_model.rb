@@ -1,11 +1,19 @@
 require 'nypl_platform_api_client'
 
 module PlatformApiModel
+  ##
+  # As a convenience, allow property access to fall through to @data.
+  #
+  # For example, for an instance of a Bib, bib.author should return
+  # @data['author']
   def method_missing(name, *args)
     name = name.to_s
     @data[name] if @data.keys.include? name
   end
 
+  ##
+  # Ensure models that include PlatformApiModel have access to
+  # class methods like platform_client
   def self.included(o)
     o.extend(ClassMethods)
   end

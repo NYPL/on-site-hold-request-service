@@ -14,6 +14,8 @@ class LibAnswersEmail
     @hold_request = on_site_hold_request
   end
 
+  ##
+  # Initialize the data necessary to build the LibAnswers email
   def initialize_email_data
     @email_data = {
       "Patron Information" => {
@@ -103,6 +105,8 @@ class LibAnswersEmail
 
   ##
   # Attempt to send the email through SES
+  #
+  # Will raise InternalError if error sending email via SES
   def send
     ses = Aws::SES::Client.new(region: 'us-east-1')
 
@@ -147,6 +151,12 @@ class LibAnswersEmail
     end
   end
 
+  ##
+  # Attempt to create and send LibAnswers email
+  #
+  # Will raise InternalError if error sending email via SES
+  #
+  # Otherwise returns nil
   def self.create(on_site_hold_request)
     self.new(on_site_hold_request).send
   end

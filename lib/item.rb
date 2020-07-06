@@ -14,6 +14,9 @@ class Item
     @data.dig "location", "code"
   end
 
+  ##
+  # Get item_type formatted as "{code} ({label})",
+  #   e.g. "55 (book, limited circ, MaRLI)"
   def item_type
     fixed_field('Item Type') { |field| "#{field['value']} (#{field['display']})" }
   end
@@ -23,6 +26,8 @@ class Item
   end
 
   def staff_call_number
+    # TODO: This probably needs additional subfields as it's currently not
+    # differentiated from `call_number`:
     var_field 852, 'h'
   end
 
