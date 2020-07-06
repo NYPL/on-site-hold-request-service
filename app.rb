@@ -53,11 +53,20 @@ def handle_create_hold_request(event)
 
   $logger.debug "OnSiteHoldRequest.create #{params.to_json}"
 
-  OnSiteHoldRequest.create params
-
-  {
-    statusCode: 201
-  }
+  begin
+    OnSiteHoldRequest.create params
+    {
+      statusCode: 201,
+      message: "Hold created"
+    }
+  rescue SierraHoldAlreadyCreatedError => e
+    # Sierra reports the hold has already been reported. Indicate success, but
+    # differentiate from 201 created response.
+    {
+      statusCode: 200,
+      message: "Hold already created"
+    }
+  end
 end
 
 def parse_body(event)
@@ -74,7 +83,7 @@ def respond(statusCode = 200, body = nil)
 
   {
     statusCode: statusCode,
-    body: body.to_json,
+    body: { statusCode: statusCode }.merge(body).to_json,
     headers: {
       "Content-type": "application/json"
     }

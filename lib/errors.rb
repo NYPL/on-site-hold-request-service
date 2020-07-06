@@ -22,6 +22,12 @@ class SierraError < StandardError
   end
 end
 
+class SierraHoldAlreadyCreatedError < StandardError
+  def initialize(msg="Sierra hold already created")
+    super
+  end
+end
+
 class SierraRecordUnavailableError < StandardError
   def initialize(msg="Sierra record not available")
     super
