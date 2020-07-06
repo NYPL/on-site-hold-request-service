@@ -18,7 +18,7 @@ ENV['NYPL_OAUTH_SECRET'] = Base64.strict_encode64 'fake-secret'
 ENV['APP_ENV'] = 'test'
 
 ENV['EDD_EMAIL_SENDER'] = 'on-site-edd@nypl.org'
-ENV['LIB_ANSWERS_DEFAULT_DESTINATION_EMAIL'] = 'user@example.com'
+ENV['LIB_ANSWERS_EMAIL_SASB'] = Base64.strict_encode64 'user@example.com'
 
 $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 

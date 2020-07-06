@@ -17,7 +17,6 @@ class InternalError < StandardError
 end
 
 class SierraError < StandardError
-
   def initialize(msg="Sierra Error")
     super
   end

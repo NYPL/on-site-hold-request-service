@@ -1,9 +1,14 @@
 require "erb"
 require "aws-sdk-ses"
 
+require_relative 'kms_client'
+require_relative 'errors'
+
 class LibAnswersEmail
   EMAIL_ENCODING = "UTF-8"
   EMAIL_SENDER = 'on-site-hold-request-service@nypl.org'
+
+  @@_location_email_mapping = nil
 
   def initialize(on_site_hold_request)
     @hold_request = on_site_hold_request
@@ -37,33 +42,72 @@ class LibAnswersEmail
           .join('; ')
       },
       "EDD Information" => {
+        "Email" => @hold_request.doc_delivery_data['emailAddress'],
         "EDD Pick-up Location" => @hold_request.pickup_location,
-        "Volume Number" =>  @hold_request.doc_delivery_data['volume'],
-        "Date" => @hold_request.doc_delivery_data['date'],
         "Page Numbers" => "#{@hold_request.doc_delivery_data['startPage']} - #{@hold_request.doc_delivery_data['endPage']}",
+        "Chapter/Article Title" =>  @hold_request.doc_delivery_data['chapterTitle'],
+        "Author" =>  @hold_request.doc_delivery_data['author'],
+        "Volume Number" =>  @hold_request.doc_delivery_data['volume'],
+        "Issue" =>  @hold_request.doc_delivery_data['issue'],
+        "Date" => @hold_request.doc_delivery_data['date'],
         "Additional Notes or Instructions" => @hold_request.doc_delivery_data['requestNotes']
       }
     }
   end
 
+  ##
+  # Get the LibAnswers email address appropriate for the item by location
   def destination_email
-    # FIXME: This is waiting on a real mapping:
+    email = nil
+
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
-      ENV['LIB_ANSWERS_DEFAULT_DESTINATION_EMAIL']
+      email = location_email_mapping['SASB']
+    when 'my'
+      email = location_email_mapping['LPA']
+    when 'sc'
+      email = location_email_mapping['SC']
     end
+
+    if email.nil?
+      $logger.debug "Could not determine LibAnswers email for item location #{@hold_request.item.location_code}"
+      raise InternalError, "Error queueing EDD"
+    end
+
+    $logger.debug "LibAnswers email for #{@hold_request.item.location_code}: #{email}"
+    email = ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'] if ENV['APP_ENV'] != 'production'
+
+    email
   end
 
+  ##
+  # Get a hash mapping location slugs ('SASB', 'LPA', 'SC') to LibAnswers email addresses
+  def location_email_mapping
+    return @@_location_email_mapping unless @@_location_email_mapping.nil?
+
+    kms_client = KmsClient.new
+
+    @@_location_email_mapping = ENV.keys
+      .filter { |key| key.start_with? 'LIB_ANSWERS_EMAIL_' }
+      .map { |key| [key.sub('LIB_ANSWERS_EMAIL_', ''), kms_client.decrypt(ENV[key])] }
+      .to_h
+  end
+
+  ##
+  # Get email body in specified format (:html, :text)
   def body(which = :html)
     initialize_email_data if @email_data.nil?
 
     erb = ERB.new(File.read("./email/lib_answers_email.#{which}.erb")).result binding
   end
 
+  ##
+  # Attempt to send the email through SES
   def send
     ses = Aws::SES::Client.new(region: 'us-east-1')
 
-    if destination_email.nil? || destination_email.empty?
+    recip = destination_email
+    if recip.nil? || recip.empty?
       $logger.debug "Destination email unknown. Aborting LibAnswers email."
       return
     end
@@ -74,7 +118,7 @@ class LibAnswersEmail
       resp = ses.send_email({
         destination: {
           to_addresses: [
-            destination_email
+            recip
           ],
         },
         message: {
@@ -95,10 +139,11 @@ class LibAnswersEmail
         },
         source: EMAIL_SENDER
       })
-      $logger.debug "Email sent to #{destination_email}"
+      $logger.debug "Email sent to #{recip}"
 
     rescue Aws::SES::Errors::ServiceError => error
       $logger.error "Email not sent. Error message: #{error}"
+      raise InternalError, "Internal error: Issue queueing EDD"
     end
   end
 

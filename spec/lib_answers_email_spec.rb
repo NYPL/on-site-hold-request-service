@@ -58,5 +58,13 @@ describe LibAnswersEmail do
     it 'includes EDD pickup location' do
       expect(email.body(:text)).to include('EDD Pick-up Location: mab')
     end
+
+    it 'includes patron-supplied email' do
+      expect(email.body(:text)).to include('Email: user@example.com')
+    end
+
+    it 'includes patron chapter/article title' do
+      expect(email.body(:text)).to include('Chapter/Article Title: Chapter One')
+    end
   end
 end
