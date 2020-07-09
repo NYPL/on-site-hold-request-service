@@ -7,8 +7,10 @@ require_relative 'lib/on_site_hold_request'
 def init
   return if $initialized
 
+  # Instantiate a global logger
   $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 
+  # Load swagger doc into memory
   $swagger_doc = JSON.load(File.read('./swagger.json'))
 
   $initialized = true
@@ -25,8 +27,10 @@ def handle_event(event:, context:)
   begin
     response = nil
     if method == 'get' && path == "/docs/on-site-hold-requests"
+      # Serve swagger doc
       return respond 200, $swagger_doc
     elsif method == 'post' && path == '/api/v0.1/on-site-hold-requests'
+      # Handle OnSiteHoldRequest creation
       response = handle_create_hold_request event
     else
       return respond 400, 'Bad method'
@@ -49,11 +53,20 @@ def handle_create_hold_request(event)
 
   $logger.debug "OnSiteHoldRequest.create #{params.to_json}"
 
-  OnSiteHoldRequest.create params
-
-  {
-    statusCode: 201
-  }
+  begin
+    OnSiteHoldRequest.create params
+    {
+      statusCode: 201,
+      message: "Hold created"
+    }
+  rescue SierraHoldAlreadyCreatedError => e
+    # Sierra reports the hold has already been reported. Indicate success, but
+    # differentiate from 201 created response.
+    {
+      statusCode: 200,
+      message: "Hold already created"
+    }
+  end
 end
 
 def parse_body(event)
@@ -70,7 +83,7 @@ def respond(statusCode = 200, body = nil)
 
   {
     statusCode: statusCode,
-    body: body.to_json,
+    body: { statusCode: statusCode }.merge(body).to_json,
     headers: {
       "Content-type": "application/json"
     }

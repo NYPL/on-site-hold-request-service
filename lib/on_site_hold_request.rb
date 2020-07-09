@@ -15,12 +15,19 @@ class OnSiteHoldRequest
     @data = data
   end
 
+  ##
+  # Attempt to
+  #   1) Create hold in Sierra, and..
+  #      if hold created successfully and it's an EDD request
+  #   2) place EDD request in LibAnswers
   def create
     create_sierra_hold
     create_libanswers_job if is_edd?
     self
   end
 
+  ##
+  # Is the request an EDD request?
   def is_edd?
     ! @data.dig('docDeliveryData', 'emailAddress').nil?
   end
@@ -41,17 +48,33 @@ class OnSiteHoldRequest
     @item = Item.by_id 'sierra-nypl', @data['record']
   end
 
+  ##
+  # Get location code for EDD pickup location based on item holding location
   def pickup_location
     if is_edd?
       # Determine pickup location by holding location for item
-      holding_location = item.location_code
-      # TODO: need a way to determine correct EDD pickup location
-      'mab'
+      case item.location_code[(0...2)]
+      when 'ma'
+        'mal'
+      when 'my'
+        'mal'
+      when 'sc'
+        'mal'
+      end
     else
       @data['pickupLocation']
     end
   end
 
+  ##
+  # Attempt to create hold in Sierra
+  #
+  # Will raise:
+  #  - SierraRecordUnavailableError if hold can not be placed due to
+  #    'not available' Sierra response
+  #  - SierraHoldAlreadyCreated if hold has already been created
+  #
+  # Will return nil on success
   def create_sierra_hold
     patron_id = @data['patron']
 
@@ -70,18 +93,35 @@ class OnSiteHoldRequest
 
     if response.error?
       if response.body && response.body['description'].include?('This record is not available')
+        # Failed due to mysterious "This record is not available" error
         raise SierraRecordUnavailableError, "Item unavailable in Sierra for patron #{patron_id}, item #{@data['record']}, pickup #{pickup_location}: #{response.code}: #{response.body}"
+      elsif response.body && response.body['description'].include?('Request denied - already on hold for or checked out to you.')
+        # Failed due to hold already existing for this patron
+        raise SierraHoldAlreadyCreatedError, "Hold already created in Sierra for patron #{patron_id}, item #{@data['record']}, pickup #{pickup_location}: #{response.code}: #{response.body}"
       end
       raise SierraError, "Error placing Sierra hold for patron #{patron_id}, item #{@data['record']}, pickup #{pickup_location}: #{response.code}: #{response.body}"
     end
   end
 
+  ##
+  # Attempt to queue EDD job in LibAnswers
+  #
+  # Uncaught InternalError if error sending email via SES
   def create_libanswers_job
     return unless is_edd?
 
     LibAnswersEmail.create self
   end
 
+  ##
+  # Create new OnSiteHoldRequest
+  #
+  # Will raise:
+  #  - ParameterError if Sierra reports item 'not available'
+  #  - SierraHoldAlreadyCreatedError if hold already placed
+  #  - SierraError if Sierra reports any other error
+  #
+  # Otherwise returns new OnSiteHoldRequest instance
   def self.create(params = {})
     [ 'patron', 'record' ].each do |param|
       # Ensure set
@@ -104,6 +144,8 @@ class OnSiteHoldRequest
     end
   end
 
+  ##
+  # Create a SierraApiClient instance
   def self.sierra_client
     if @@_sierra_client.nil?
       kms_client = KmsClient.new

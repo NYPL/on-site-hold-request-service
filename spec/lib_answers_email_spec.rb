@@ -56,7 +56,7 @@ describe LibAnswersEmail do
     end
 
     it 'includes EDD pickup location' do
-      expect(email.body(:text)).to include('EDD Pick-up Location: mab')
+      expect(email.body(:text)).to include('EDD Pick-up Location: mal')
     end
 
     it 'includes patron-supplied email' do

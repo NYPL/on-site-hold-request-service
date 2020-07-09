@@ -39,7 +39,7 @@ describe OnSiteHoldRequest do
     expect(hold_request.patron.id).to eq(12345)
     expect(hold_request.item).to be_a(Item)
     expect(hold_request.item.id).to eq("10857004")
-    expect(hold_request.pickup_location).to eq("mab")
+    expect(hold_request.pickup_location).to eq("mal")
   end
 
 end

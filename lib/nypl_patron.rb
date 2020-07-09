@@ -9,6 +9,8 @@ class NyplPatron
     @data = data
   end
 
+  ##
+  # Bring sanity to this confounding capitalization
   def barcodes
     @data['barCodes']
   end
