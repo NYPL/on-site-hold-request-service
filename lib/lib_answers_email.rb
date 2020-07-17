@@ -7,7 +7,8 @@ require_relative 'string_util'
 
 class LibAnswersEmail
   EMAIL_ENCODING = "UTF-8"
-  EMAIL_SENDER = 'on-site-hold-request-service@nypl.org'
+  # TODO: Fix issue where @nypl.org are not deliverable from @nypl.org sender
+  EMAIL_SENDER = 'no-reply@mylibrarynyc.org' # researchrequests@nypl.org'
 
   @@_location_email_mapping = nil
 
