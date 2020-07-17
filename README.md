@@ -16,6 +16,11 @@ rvm use
 bundle install
 ```
 
+Create your own `sam.local.yml`:
+```
+cp sam.example.yml sam.local.yml
+```
+
 To run a local server against Sierra Test:
 
 ```
