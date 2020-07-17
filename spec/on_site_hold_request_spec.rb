@@ -39,7 +39,34 @@ describe OnSiteHoldRequest do
     expect(hold_request.patron.id).to eq(12345)
     expect(hold_request.item).to be_a(Item)
     expect(hold_request.item.id).to eq("10857004")
-    expect(hold_request.pickup_location).to eq("mal")
+    expect(hold_request.pickup_location).to eq("maedd")
   end
 
+  it 'detects EDD email that differs from patron email' do
+    params = {
+      "record" => "10857004",
+      "patron" => "12345",
+      "docDeliveryData" => {
+        "date" => "date...",
+        "emailAddress" => "user@example.com"
+      }
+    }
+    hold_request = OnSiteHoldRequest.create params
+    expect(hold_request).to be_a(OnSiteHoldRequest)
+    expect(hold_request.edd_email_differs_from_patron_email?).to eq(true)
+  end
+
+  it 'detects EDD email that matches patron email' do
+    params = {
+      "record" => "10857004",
+      "patron" => "12345",
+      "docDeliveryData" => {
+        "date" => "date...",
+        "emailAddress" => "example@example.com"
+      }
+    }
+    hold_request = OnSiteHoldRequest.create params
+    expect(hold_request).to be_a(OnSiteHoldRequest)
+    expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
+  end
 end

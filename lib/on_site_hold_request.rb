@@ -32,6 +32,20 @@ class OnSiteHoldRequest
     ! @data.dig('docDeliveryData', 'emailAddress').nil?
   end
 
+  ##
+  # Pluck edd email
+  def edd_email
+    @data.dig('docDeliveryData', 'emailAddress')
+  end
+
+  ##
+  # Is the custom EDD email given different from the patron email?
+  def edd_email_differs_from_patron_email?
+    return false unless is_edd?
+
+    edd_email != patron.emails.first
+  end
+
   def doc_delivery_data
     @data['docDeliveryData']
   end
