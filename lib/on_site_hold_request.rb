@@ -55,11 +55,11 @@ class OnSiteHoldRequest
       # Determine pickup location by holding location for item
       case item.location_code[(0...2)]
       when 'ma'
-        'mal'
+        'maedd'
       when 'my'
-        'mal'
+        'myedd'
       when 'sc'
-        'mal'
+        'scedd'
       end
     else
       @data['pickupLocation']
