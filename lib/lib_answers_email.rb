@@ -3,6 +3,7 @@ require "aws-sdk-ses"
 
 require_relative 'kms_client'
 require_relative 'errors'
+require_relative 'string_util'
 
 class LibAnswersEmail
   EMAIL_ENCODING = "UTF-8"
@@ -17,10 +18,14 @@ class LibAnswersEmail
   ##
   # Initialize the data necessary to build the LibAnswers email
   def initialize_email_data
+    # For date-time formatting, set TZ
+    ENV['TZ'] = 'US/Eastern'
+
     @email_data = {
       "Patron Information" => {
         "Patron Name" => @hold_request.patron.names.join('; '),
-        "Patron Email" => @hold_request.patron.emails.join('; '),
+        "Patron Email" => @hold_request.patron.emails.join('; ') +
+          ( @hold_request.edd_email_differs_from_patron_email? ? ' (Patron supplied a different email below.)' : ''),
         "Patron Barcode" => @hold_request.patron.barcodes.join('; '),
         "Patron Ptype" => @hold_request.patron.ptype,
         "Patron ID" => @hold_request.patron.id
@@ -52,7 +57,8 @@ class LibAnswersEmail
         "Volume Number" =>  @hold_request.doc_delivery_data['volume'],
         "Issue" =>  @hold_request.doc_delivery_data['issue'],
         "Date" => @hold_request.doc_delivery_data['date'],
-        "Additional Notes or Instructions" => @hold_request.doc_delivery_data['requestNotes']
+        "Additional Notes or Instructions" => @hold_request.doc_delivery_data['requestNotes'],
+        "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
   end
