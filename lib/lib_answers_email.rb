@@ -89,6 +89,25 @@ class LibAnswersEmail
   end
 
   ##
+  # Get the optional BCC address to use when sending to official LibAnswers recip
+  def bcc_email
+    email = nil
+
+    case @hold_request.item.location_code[(0...2)]
+    when 'ma'
+      email = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
+    when 'my'
+      email = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
+    when 'sc'
+      email = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
+    end
+
+    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{email}"
+
+    email
+  end
+
+  ##
   # Get a hash mapping location slugs ('SASB', 'LPA', 'SC') to LibAnswers email addresses
   def location_email_mapping
     return @@_location_email_mapping unless @@_location_email_mapping.nil?
@@ -96,7 +115,7 @@ class LibAnswersEmail
     kms_client = KmsClient.new
 
     @@_location_email_mapping = ENV.keys
-      .filter { |key| key.start_with? 'LIB_ANSWERS_EMAIL_' }
+      .filter { |key| key.match? /^LIB_ANSWERS_EMAIL_([A-Z]+)$/ }
       .map { |key| [key.sub('LIB_ANSWERS_EMAIL_', ''), kms_client.decrypt(ENV[key])] }
       .to_h
   end
@@ -122,34 +141,41 @@ class LibAnswersEmail
       return
     end
 
-    # Try to send the email.
-    begin
-      # Provide the contents of the email.
-      resp = ses.send_email({
-        destination: {
-          to_addresses: [
-            recip
-          ],
-        },
-        message: {
-          body: {
-            html: {
-              charset: EMAIL_ENCODING,
-              data: body(:html)
-            },
-            text: {
-              charset: EMAIL_ENCODING,
-              data: body(:text)
-            },
-          },
-          subject: {
+    # Build the email
+    ses_data = {
+      destination: {
+        to_addresses: [
+          recip
+        ]
+      },
+      message: {
+        body: {
+          html: {
             charset: EMAIL_ENCODING,
-            data: 'EDD Hold Request'
+            data: body(:html)
+          },
+          text: {
+            charset: EMAIL_ENCODING,
+            data: body(:text)
           },
         },
-        source: EMAIL_SENDER
-      })
-      $logger.debug "Email sent to #{recip}"
+        subject: {
+          charset: EMAIL_ENCODING,
+          data: @hold_request.item.bibs.map(&:title).join('; ').truncate(100)
+        },
+      },
+      source: EMAIL_SENDER,
+      reply_to_addresses: [ @hold_request.edd_email ]
+    }
+
+    # Shall we BCC anyone?
+    bcc = bcc_email
+    ses_data[:destination][:bcc_addresses] = [bcc] if bcc
+
+    begin
+      # Send the email
+      ses.send_email ses_data
+      $logger.debug "Email sent to #{recip}#{bcc ? ", bcc #{bcc}" : ''}"
 
     rescue Aws::SES::Errors::ServiceError => error
       $logger.error "Email not sent. Error message: #{error}"
