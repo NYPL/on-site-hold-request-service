@@ -98,7 +98,6 @@ class OnSiteHoldRequest
       'pickupLocation' => pickup_location
     }
     hold['neededBy'] = @data['neededBy'] unless @data['neededBy'].nil?
-    hold['numberOfCopies'] = @data['numberOfCopies'] unless @data['numberOfCopies'].nil?
 
     # See https://sandbox.iii.com/iii/sierra-api/swagger/index.html#!/patrons/Place_a_new_hold_request_post_24
     $logger.debug "self.sierra_client.post \"patrons/#{patron_id}/holds/requests\", #{hold.to_json}"
