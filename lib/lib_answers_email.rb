@@ -116,21 +116,22 @@ class LibAnswersEmail
 
   ##
   # Get the optional BCC address to use when sending to official LibAnswers recip
-  def bcc_email
-    email = nil
+  def bcc_emails
+    emails = nil
 
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
-      email = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
     when 'my'
-      email = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
     when 'sc'
-      email = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
     end
 
-    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{email}"
+    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
 
-    email
+    emails = emails.split(',').map(&:strip)
+    emails.size == 1 && emails.first == '' ? nil : emails
   end
 
   ##
@@ -195,13 +196,13 @@ class LibAnswersEmail
     }
 
     # Shall we BCC anyone?
-    bcc = bcc_email
-    ses_data[:destination][:bcc_addresses] = [bcc] if bcc
+    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.nil?
 
     begin
       # Send the email
+      $logger.debug "Sending email to #{recip}#{bcc_emails ? ", bcc #{bcc_emails}" : ''}"
       ses.send_email ses_data
-      $logger.debug "Email sent to #{recip}#{bcc ? ", bcc #{bcc}" : ''}"
+      $logger.debug "Email sent to #{recip}#{bcc_emails ? ", bcc #{bcc_emails}" : ''}"
 
     rescue Aws::SES::Errors::ServiceError => error
       $logger.error "Email not sent. Error message: #{error}"
