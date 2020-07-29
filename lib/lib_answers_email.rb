@@ -43,10 +43,10 @@ class LibAnswersEmail
         "Bib ID" => @hold_request.item.bibs.map(&:id).join('; '),
         "Item ID" => @hold_request.item.id,
         "SCC URL" => @hold_request.item.bibs
-          .map { |bib| "https://www.nypl.org/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
+          .map { |bib| "https://#{scc_domain}/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
           .join('; '),
         "Catalog URL" => @hold_request.item.bibs
-          .map { |bib| "https://catalog.nypl.org/record=b#{bib.id}" }
+          .map { |bib| "https://#{catalog_domain}/record=b#{bib.id}" }
           .join('; ')
       },
       "EDD Information" => {
@@ -62,6 +62,31 @@ class LibAnswersEmail
         "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
+  end
+
+  def email_header
+    'A patron hold has been created in ' +
+      (is_sierra_test? ? 'Sierra Test' : 'Production Sierra') +
+      ' for an EDD request placed in ' +
+      (is_sierra_test? ? 'SCC Training/QA' : 'Production SCC')
+  end
+
+  ##
+  # Get relevant SCC domain
+  def scc_domain
+    is_sierra_test? ? ENV['SCC_TRAINING_DOMAIN'] : 'www.nypl.org'
+  end
+
+  ##
+  # Get relevant catalog domain
+  def catalog_domain
+    is_sierra_test? ? 'nypl-sierra-test.nypl.org' : 'catalog.nypl.org'
+  end
+
+  ##
+  # Returns true if the hold was created in Sierra Test
+  def is_sierra_test?
+    ENV['SIERRA_API_BASE_URL'].include? 'nypl-sierra-test.nypl.org'
   end
 
   ##

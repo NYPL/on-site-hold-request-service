@@ -28,6 +28,7 @@ Resources:
           LIB_ANSWERS_EMAIL_SC_BCC:
           LIB_ANSWERS_EMAIL_SASB_BCC:
           LIB_ANSWERS_EMAIL_LPA_BCC:
+          SCC_TRAINING_DOMAIN: 'discoveryui-edd-training.nypl.org'
       Events:
         ApiCreateHoldRequestsPath:
           Type: Api

@@ -37,3 +37,22 @@ Aws.config[:ses] = {
     }
   }
 }
+
+##
+# Utility for temporarily swapping ENV values (and restoring them)
+#
+# Usage:
+#   ENV['ENV_KEY_1'] = 'original value'
+#   use_env({ 'ENV_KEY_1' => 'temporary value'}) do
+#     # Now operating in a context where ENV['ENV_KEY_1'] === 'temporary value'
+#   end
+#   # Now operating in a context where ENV['ENV_KEY_1'] === 'original value'
+def use_env(hash)
+  previous_values = hash.keys.inject({}) { |h, k| h[k] = ENV[k]; h }
+  hash.each { |(k, v)| ENV[k] = v }
+  begin
+    yield
+  ensure
+    previous_values.each { |(k, v)| ENV[k] = v }
+  end
+end
