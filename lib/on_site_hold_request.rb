@@ -97,8 +97,12 @@ class OnSiteHoldRequest
       'recordNumber' => @data['record'],
       'pickupLocation' => pickup_location
     }
-    hold['neededBy'] = @data['neededBy'] unless @data['neededBy'].nil?
-    hold['numberOfCopies'] = @data['numberOfCopies'] unless @data['numberOfCopies'].nil?
+    # TODO: Sierra complains about json formatting if `neededBy` doesn't match
+    # "ISO 8601 format (yyyy-MM-dd)", so we should reduce precision of
+    # `neededBy` when time info is included.
+    # For now, we'll just disable it because it's not set to anything
+    # meaningful right now.
+    # hold['neededBy'] = @data['neededBy'] unless @data['neededBy'].nil?
 
     # See https://sandbox.iii.com/iii/sierra-api/swagger/index.html#!/patrons/Place_a_new_hold_request_post_24
     $logger.debug "self.sierra_client.post \"patrons/#{patron_id}/holds/requests\", #{hold.to_json}"
