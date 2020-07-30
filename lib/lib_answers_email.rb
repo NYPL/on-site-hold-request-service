@@ -43,10 +43,10 @@ class LibAnswersEmail
         "Bib ID" => @hold_request.item.bibs.map(&:id).join('; '),
         "Item ID" => @hold_request.item.id,
         "SCC URL" => @hold_request.item.bibs
-          .map { |bib| "https://www.nypl.org/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
+          .map { |bib| "https://#{scc_domain}/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
           .join('; '),
         "Catalog URL" => @hold_request.item.bibs
-          .map { |bib| "https://catalog.nypl.org/record=b#{bib.id}" }
+          .map { |bib| "https://#{catalog_domain}/record=b#{bib.id}" }
           .join('; ')
       },
       "EDD Information" => {
@@ -62,6 +62,31 @@ class LibAnswersEmail
         "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
+  end
+
+  def email_header
+    'A patron hold has been created in ' +
+      (is_sierra_test? ? 'Sierra Test' : 'Production Sierra') +
+      ' for an EDD request placed in ' +
+      (is_sierra_test? ? 'SCC Training/QA' : 'Production SCC')
+  end
+
+  ##
+  # Get relevant SCC domain
+  def scc_domain
+    is_sierra_test? ? ENV['SCC_TRAINING_DOMAIN'] : 'www.nypl.org'
+  end
+
+  ##
+  # Get relevant catalog domain
+  def catalog_domain
+    is_sierra_test? ? 'nypl-sierra-test.nypl.org' : 'catalog.nypl.org'
+  end
+
+  ##
+  # Returns true if the hold was created in Sierra Test
+  def is_sierra_test?
+    ENV['SIERRA_API_BASE_URL'].include? 'nypl-sierra-test.nypl.org'
   end
 
   ##
@@ -91,21 +116,22 @@ class LibAnswersEmail
 
   ##
   # Get the optional BCC address to use when sending to official LibAnswers recip
-  def bcc_email
-    email = nil
+  def bcc_emails
+    emails = nil
 
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
-      email = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
     when 'my'
-      email = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
     when 'sc'
-      email = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
     end
 
-    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{email}"
+    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
 
-    email
+    emails = emails.split(',').map(&:strip)
+    emails.size == 1 && emails.first == '' ? nil : emails
   end
 
   ##
@@ -170,13 +196,13 @@ class LibAnswersEmail
     }
 
     # Shall we BCC anyone?
-    bcc = bcc_email
-    ses_data[:destination][:bcc_addresses] = [bcc] if bcc
+    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.nil?
 
     begin
       # Send the email
+      $logger.debug "Sending email to #{recip}#{bcc_emails ? ", bcc #{bcc_emails}" : ''}"
       ses.send_email ses_data
-      $logger.debug "Email sent to #{recip}#{bcc ? ", bcc #{bcc}" : ''}"
+      $logger.debug "Email sent to #{recip}#{bcc_emails ? ", bcc #{bcc_emails}" : ''}"
 
     rescue Aws::SES::Errors::ServiceError => error
       $logger.error "Email not sent. Error message: #{error}"

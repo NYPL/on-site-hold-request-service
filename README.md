@@ -30,7 +30,7 @@ sam local start-api --region us-east-1 --template sam.local.yml --profile nypl-d
 To run a specific query, choose an event in `./events` and run, for example:
 
 ```
-sam local invoke --region us-east-1 --template sam.local.yml --profile nypl-digital-dev --event events/create-edd-hold-request.json
+sam local invoke --region us-east-1 --template sam.local.yml --profile nypl-digital-dev --event events/create-edd-hold-request-sasb.json
 ```
 
 ## Contributing

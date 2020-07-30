@@ -66,5 +66,21 @@ describe LibAnswersEmail do
     it 'includes patron chapter/article title' do
       expect(email.body(:text)).to include('Chapter/Article Title: Chapter One')
     end
+
+    it 'includes correct descriptive header' do
+      # Trick the model into thinking it's operating against Production Sierra:
+      use_env({ 'SIERRA_API_BASE_URL' => 'https://catalog.nypl.org/' }) do
+        expected = 'A patron hold has been created in Production Sierra' +
+          ' for an EDD request placed in Production SCC'
+        expect(email.body(:text)).to include(expected)
+      end
+
+      # Trick the model into thinking it's operating against Sierra Test:
+      use_env({ 'SIERRA_API_BASE_URL' => 'https://nypl-sierra-test.nypl.org/' }) do
+        expected = 'A patron hold has been created in Sierra Test' +
+          ' for an EDD request placed in SCC Training/QA'
+        expect(email.email_header).to include(expected)
+      end
+    end
   end
 end
