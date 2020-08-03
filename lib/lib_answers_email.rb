@@ -130,8 +130,7 @@ class LibAnswersEmail
 
     $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
 
-    emails = emails.split(',').map(&:strip)
-    emails.size == 1 && emails.first == '' ? nil : emails
+    emails.split(',').map(&:strip)
   end
 
   ##
@@ -196,7 +195,7 @@ class LibAnswersEmail
     }
 
     # Shall we BCC anyone?
-    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.nil?
+    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.empty?
 
     begin
       # Send the email
