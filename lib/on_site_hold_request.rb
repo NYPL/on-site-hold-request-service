@@ -96,7 +96,7 @@ class OnSiteHoldRequest
       'recordType' => 'i',
       'recordNumber' => @data['record'],
       'pickupLocation' => pickup_location,
-      'note' => 'EDD Shared Request'
+      'note' => 'Onsite EDD Shared Request'
     }
     # TODO: Sierra complains about json formatting if `neededBy` doesn't match
     # "ISO 8601 format (yyyy-MM-dd)", so we should reduce precision of
