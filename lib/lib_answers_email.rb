@@ -71,6 +71,11 @@ class LibAnswersEmail
       (is_sierra_test? ? 'SCC Training/QA' : 'Production SCC')
   end
 
+  def duplicate_text
+    return nil unless @hold_request.is_duplicate?
+    'Patron has made this EDD request for an item they already have on hold.'
+  end
+
   ##
   # Get relevant SCC domain
   def scc_domain
