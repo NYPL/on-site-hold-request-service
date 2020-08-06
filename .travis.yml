@@ -34,6 +34,34 @@ deploy:
   secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
   on:
     branch: qa
+- provider: lambda
+  function_name: OnSiteHoldRequestService-production
+  description: A service for creating on-site holds including on-site EDD
+  region: us-east-1
+  role: arn:aws:iam::946183545209:role/lambda-full-access
+  runtime: ruby2.7
+  module_name: app
+  handler_name: handle_event
+  environment_variables:
+  - LOG_LEVEL=debug
+  - SIERRA_API_BASE_URL=https://ilsstaff.nypl.org/iii/sierra-api/v6/
+  - SIERRA_OAUTH_URL=https://ilsstaff.nypl.org/iii/sierra-api/v6/token
+  - SIERRA_OAUTH_ID=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAHoweAYJKoZIhvcNAQcGoGswaQIBADBkBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEfdXpG+8YBcJ1ujtQIBEIA3DKj7owcoc9myPadYnGUroM2VPPc/j/FIJ4KKswWUaOHlUYWNthQE/tOfov36gSQNmMVZOToxBQ==
+  - SIERRA_OAUTH_SECRET=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAIcwgYQGCSqGSIb3DQEHBqB3MHUCAQAwcAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwYzB72KiGJlfGGDz0CARCAQ1khBNxDXCWAnmu4pY4nBzA2GdGt08VsXzGGtjhR4ZndBkRI2gUBxBuVvYLoCBRNnmSpvBTPr2fz3PGD8jnb7+mkTr0=
+  - PLATFORM_API_BASE_URL=https://qa-platform.nypl.org/api/v0.1/
+  - NYPL_OAUTH_URL=https://isso.nypl.org/
+  - NYPL_OAUTH_ID=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAHoweAYJKoZIhvcNAQcGoGswaQIBADBkBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDN82389GaLiIi0MjSQIBEIA3B7h8jIOfmPJFpd0eNOWuX2zJkXzlPGiKVCl4xejqJbFs4zzSWdcAJQqBdMVMu9SAbpZu3tSh3g==
+  - NYPL_OAUTH_SECRET=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAIcwgYQGCSqGSIb3DQEHBqB3MHUCAQAwcAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAzHT74p+My3E2mZL4UCARCAQ36SiGsER5gxOA9D4v2uQj2uyPy9tT4xE4aEeVBD/63Pqy1iGvnvsU/7c6Sa42dSFElVYUVEz9nGYv/ieNQzGEkx9rU=
+  - LIB_ANSWERS_EMAIL_SASB=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAHkwdwYJKoZIhvcNAQcGoGowaAIBADBjBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDGdjzWd58Ys7Yw5BQIBEIA2QQ2FJiOkd27QWGR1KfPWpBLgrllDLTIUtodAAry+b/Knqar1XwjO4vF5Z+tIbMeg7EplgUJB
+  - LIB_ANSWERS_EMAIL_LPA=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAHgwdgYJKoZIhvcNAQcGoGkwZwIBADBiBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDH7zdJ58EU+hS4wWXgIBEIA1QpAqum+V8QkVFbZMP5s6FyRZ62FVnHAt8BJEFR9kNB5vwCZGD3/4dPTC9lzX0LNsS7NLeWM=
+  - LIB_ANSWERS_EMAIL_SC=AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAHsweQYJKoZIhvcNAQcGoGwwagIBADBlBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBw1n53MCMaHOrTneQIBEIA4psWgnymUdUfIRtWsVW6yKEbWJaZQhKew50zOC9C/9KeFP446mk0MWIWP06SimHYhRcf5kxY46OU=
+  - DEVELOPMENT_LIB_ANSWERS_EMAIL=
+  - APP_ENV=production
+  skip_cleanup: true
+  access_key_id: "$AWS_ACCESS_KEY_ID_PRODUCTION"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY_PRODUCTION"
+  on:
+    branch: master
 notifications:
   email:
     on_failure: always
