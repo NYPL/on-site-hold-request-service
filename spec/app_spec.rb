@@ -33,6 +33,13 @@ describe :app, :type => :controller do
 
       stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/56789/holds/requests")
         .to_return(body: '', status: 201)
+
+      stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/55555/holds/requests")
+        .to_return(
+          body: JSON.generate({"description": "Request denied - already on hold for or checked out to you."}),
+          headers: {"Content-Type": "application/json"},
+          status: 400
+        )
     end
 
     it 'responds to /docs/patron with 200 and swagger doc' do
@@ -64,6 +71,22 @@ describe :app, :type => :controller do
       expect(response[:body]).to be_a(String)
       expect(JSON.parse(response[:body])).to be_a(Hash)
       expect(JSON.parse(response[:body])['statusCode']).to eq(201)
+    end
+
+    it 'responds to POST for duplicate hold request with 200' do
+      response = handle_event(
+        event: {
+          "path" => '/api/v0.1/on-site-hold-requests',
+          "httpMethod" => 'POST',
+          "body" => '{ "record": 12345, "patron": 55555 }'
+        },
+        context: {}
+      )
+
+      expect(response[:statusCode]).to eq(200)
+      expect(response[:body]).to be_a(String)
+      expect(JSON.parse(response[:body])).to be_a(Hash)
+      expect(JSON.parse(response[:body])['statusCode']).to eq(200)
     end
   end
 end

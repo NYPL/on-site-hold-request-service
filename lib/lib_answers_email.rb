@@ -62,6 +62,7 @@ class LibAnswersEmail
         "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
+    @duplicate = @hold_request.is_duplicate?
   end
 
   def email_header
@@ -69,6 +70,11 @@ class LibAnswersEmail
       (is_sierra_test? ? 'Sierra Test' : 'Production Sierra') +
       ' for an EDD request placed in ' +
       (is_sierra_test? ? 'SCC Training/QA' : 'Production SCC')
+  end
+
+  def duplicate_text
+    return nil unless @hold_request.is_duplicate?
+    'Patron has made this EDD request for an item they already have on hold.'
   end
 
   ##

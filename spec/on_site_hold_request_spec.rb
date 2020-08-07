@@ -14,6 +14,12 @@ describe OnSiteHoldRequest do
 
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/12345/holds/requests")
       .to_return(body: '', status: 201)
+    stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/56789/holds/requests")
+      .to_return(
+        body: JSON.generate({"description": "Request denied - already on hold for or checked out to you."}),
+        headers: {"Content-Type": "application/json"},
+        status: 400
+      )
   end
 
   it 'instantiates an EDD OnSiteHoldRequest from params' do
