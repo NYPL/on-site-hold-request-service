@@ -62,6 +62,7 @@ class LibAnswersEmail
         "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
+    @duplicate = @hold_request.is_duplicate?
   end
 
   def email_header
