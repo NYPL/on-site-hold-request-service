@@ -1,5 +1,11 @@
 <%= email_header %>
 
+<% if @duplicate %>
+  <p>
+    <%= duplicate_text %>
+  </p>
+<% end %>
+
 <table>
 <%
   @email_data.each do |(category, properties)|

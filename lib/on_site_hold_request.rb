@@ -9,10 +9,12 @@ require_relative 'item'
 require_relative 'nypl_patron'
 
 class OnSiteHoldRequest
+  attr_accessor :duplicate
   @@_sierra_client = nil
 
   def initialize (data)
     @data = data
+    @duplicate = false
   end
 
   ##
@@ -21,7 +23,11 @@ class OnSiteHoldRequest
   #      if hold created successfully and it's an EDD request
   #   2) place EDD request in LibAnswers
   def create
-    create_sierra_hold
+    begin
+      create_sierra_hold
+    rescue SierraHoldAlreadyCreatedError => e
+      @duplicate = true
+    end
     create_libanswers_job if is_edd?
     self
   end
@@ -30,6 +36,10 @@ class OnSiteHoldRequest
   # Is the request an EDD request?
   def is_edd?
     ! @data.dig('docDeliveryData', 'emailAddress').nil?
+  end
+
+  def is_duplicate?
+    return @duplicate
   end
 
   ##
@@ -95,7 +105,8 @@ class OnSiteHoldRequest
     hold = {
       'recordType' => 'i',
       'recordNumber' => @data['record'],
-      'pickupLocation' => pickup_location
+      'pickupLocation' => pickup_location,
+      'note' => 'Onsite EDD Shared Request'
     }
     # TODO: Sierra complains about json formatting if `neededBy` doesn't match
     # "ISO 8601 format (yyyy-MM-dd)", so we should reduce precision of

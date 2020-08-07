@@ -62,6 +62,7 @@ class LibAnswersEmail
         "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
+    @duplicate = @hold_request.is_duplicate?
   end
 
   def email_header
@@ -69,6 +70,11 @@ class LibAnswersEmail
       (is_sierra_test? ? 'Sierra Test' : 'Production Sierra') +
       ' for an EDD request placed in ' +
       (is_sierra_test? ? 'SCC Training/QA' : 'Production SCC')
+  end
+
+  def duplicate_text
+    return nil unless @hold_request.is_duplicate?
+    'Patron has made this EDD request for an item they already have on hold.'
   end
 
   ##
@@ -130,8 +136,7 @@ class LibAnswersEmail
 
     $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
 
-    emails = emails.split(',').map(&:strip)
-    emails.size == 1 && emails.first == '' ? nil : emails
+    emails.split(',').map(&:strip)
   end
 
   ##
@@ -196,7 +201,7 @@ class LibAnswersEmail
     }
 
     # Shall we BCC anyone?
-    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.nil?
+    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.empty?
 
     begin
       # Send the email

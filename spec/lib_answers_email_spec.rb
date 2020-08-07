@@ -83,4 +83,34 @@ describe LibAnswersEmail do
       end
     end
   end
+
+  describe 'email for duplicate hold' do
+    email = nil
+
+    before(:each) do
+      data = {
+        "record" => 10857004,
+        "patron" => 12345,
+        "docDeliveryData" => {
+          "date" => "date...",
+          "emailAddress" => "user@example.com",
+          "chapterTitle" => "Chapter One",
+          "startPage" => "100",
+          "endPage" => "150",
+          "author" => "Anonymous",
+          "issue" => "Summer 2017",
+          "volume" => "159",
+          "requestNotes" => "..."
+        }
+      }
+      hold_request = OnSiteHoldRequest.new(data)
+      hold_request.duplicate = true
+      email = LibAnswersEmail.new(hold_request)
+    end
+
+    it 'includes text indicating that hold is a duplicate' do
+      expected = 'Patron has made this EDD request for an item they already have on hold.'
+      expect(email.body(:html)).to include(expected)
+    end
+  end
 end
