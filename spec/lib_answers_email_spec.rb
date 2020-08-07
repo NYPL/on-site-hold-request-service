@@ -110,7 +110,7 @@ describe LibAnswersEmail do
 
     it 'includes text indicating that hold is a duplicate' do
       expected = 'Patron has made this EDD request for an item they already have on hold.'
-      expect(email.body(:text)).to include(expected)
+      expect(email.body(:html)).to include(expected)
     end
   end
 end

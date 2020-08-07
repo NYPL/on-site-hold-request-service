@@ -1,6 +1,10 @@
 <%= email_header %>
 
-<%= <p> duplicate_text </p> if @duplicate %>
+<% if @duplicate %>
+  <p>
+    <%= duplicate_text %>
+  </p>
+<% end %>
 
 <table>
 <%
