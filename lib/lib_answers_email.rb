@@ -134,7 +134,7 @@ class LibAnswersEmail
       emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
     end
 
-    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
+    return [] if emails.nil?
 
     emails.split(',').map(&:strip)
   end
