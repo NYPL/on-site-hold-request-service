@@ -113,4 +113,49 @@ describe LibAnswersEmail do
       expect(email.body(:html)).to include(expected)
     end
   end
+
+  describe 'patron, item with missing fields'  do
+    email = nil
+
+    before(:each) do
+
+      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}patrons/6789")
+        .to_return(body: File.read('./spec/fixtures/patron-6789-no-data.json'))
+      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items/sierra-nypl/10857004999")
+        .to_return(body: File.read('./spec/fixtures/item-10857004999-no-data.json'))
+
+      data = {
+        "record" => 10857004999,
+        "patron" => 6789,
+        "docDeliveryData" => {
+          "date" => "date...",
+          "emailAddress" => "user@example.com",
+          "chapterTitle" => "Chapter One",
+          "startPage" => "100",
+          "endPage" => "150",
+          "author" => "Anonymous",
+          "issue" => "Summer 2017",
+          "volume" => "159",
+          "requestNotes" => "..."
+        }
+      }
+      hold_request = OnSiteHoldRequest.new(data)
+      email = LibAnswersEmail.new(hold_request)
+    end
+
+    it 'includes empty Email field' do
+      expected = "Patron Email: \n"
+      expect(email.body(:text)).to include(expected)
+    end
+
+    it 'includes empty Name field' do
+      expected = "Patron Name: \n"
+      expect(email.body(:text)).to include(expected)
+    end
+
+    it 'includes empty title field' do
+      expected = "Item Title: \n"
+      expect(email.body(:text)).to include(expected)
+    end
+  end
 end
