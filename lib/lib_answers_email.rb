@@ -24,23 +24,23 @@ class LibAnswersEmail
 
     @email_data = {
       "Patron Information" => {
-        "Patron Name" => @hold_request.patron.names.join('; '),
-        "Patron Email" => @hold_request.patron.emails.join('; ') +
-          ( @hold_request.edd_email_differs_from_patron_email? ? ' (Patron supplied a different email below.)' : ''),
-        "Patron Barcode" => @hold_request.patron.barcodes.join('; '),
+        "Patron Name" => format(@hold_request.patron.names),
+        "Patron Email" => format(@hold_request.patron.emails) +
+        ( !@hold_request.patron.emails.nil? && @hold_request.edd_email_differs_from_patron_email? ? ' (Patron supplied a different email below.)' : ''),
+        "Patron Barcode" => format(@hold_request.patron.barcodes),
         "Patron Ptype" => @hold_request.patron.ptype,
         "Patron ID" => @hold_request.patron.id
       },
       "Item Information" => {
-        "Author" => @hold_request.item.bibs.map(&:author).join('; '),
-        "Item Title" => @hold_request.item.bibs.map(&:title).join('; '),
+        "Author" => format(@hold_request.item.bibs, :author),
+        "Item Title" => format(@hold_request.item.bibs, :title),
         "Call Number" => @hold_request.item.call_number,
         "Staff Call Number" => @hold_request.item.staff_call_number,
-        "Standard Number" => @hold_request.item.bibs.map(&:standard_number).join('; '),
+        "Standard Number" => format(@hold_request.item.bibs, :standard_number),
         "Item Barcode" => @hold_request.item.barcode,
         "Item Type" => @hold_request.item.item_type,
         "Location Code" => @hold_request.item.location_code,
-        "Bib ID" => @hold_request.item.bibs.map(&:id).join('; '),
+        "Bib ID" => format(@hold_request.item.bibs, :id),
         "Item ID" => @hold_request.item.id,
         "SCC URL" => @hold_request.item.bibs
           .map { |bib| "https://#{scc_domain}/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
@@ -193,7 +193,7 @@ class LibAnswersEmail
         },
         subject: {
           charset: EMAIL_ENCODING,
-          data: @hold_request.item.bibs.map(&:title).join('; ').truncate(100)
+          data: format(@hold_request.item.bibs, :title).truncate(100)
         },
       },
       source: EMAIL_SENDER,
@@ -213,6 +213,17 @@ class LibAnswersEmail
       $logger.error "Email not sent. Error message: #{error}"
       raise InternalError, "Internal error: Issue queueing EDD"
     end
+  end
+
+  ##
+  # Util for formatting values in email.
+  #
+  # Given a value, returns the value(s) as a string.
+  #
+  # If `pluck` given, extracts the named property from each value
+  def format(val, pluck = nil)
+    val = val.map(&pluck) if val.is_a?(Array) && !pluck.nil?
+    val.is_a?(Array) ? val.join('; ') : val.to_s
   end
 
   ##

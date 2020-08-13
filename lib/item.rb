@@ -35,8 +35,11 @@ class Item
     var_field 852, 'h'
   end
 
+  ##
+  # Get associated bibs
   def bibs
     return @bibs unless @bibs.nil?
+    return [] if @data['bibIds'].nil? || !@data['bibIds'].is_a?(Array)
 
     @bibs = @data['bibIds'].map { |bib_id| Bib.by_id @data['nyplSource'], bib_id }
 

@@ -53,7 +53,7 @@ class OnSiteHoldRequest
   def edd_email_differs_from_patron_email?
     return false unless is_edd?
 
-    edd_email != patron.emails.first
+    patron.emails.nil? || edd_email != patron.emails.first
   end
 
   def doc_delivery_data
