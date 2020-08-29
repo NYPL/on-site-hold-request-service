@@ -127,11 +127,11 @@ class LibAnswersEmail
 
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
-      emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC'] || ''
     when 'my'
-      emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC'] || ''
     when 'sc'
-      emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC'] || ''
     end
 
     $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
