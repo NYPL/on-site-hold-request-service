@@ -23,6 +23,18 @@ class LibAnswersEmail
     ENV['TZ'] = 'US/Eastern'
 
     @email_data = {
+      "EDD Information" => {
+        "Email" => @hold_request.doc_delivery_data['emailAddress'],
+        "EDD Pick-up Location" => @hold_request.pickup_location,
+        "Page Numbers" => "#{@hold_request.doc_delivery_data['startPage']} - #{@hold_request.doc_delivery_data['endPage']}",
+        "Chapter/Article Title" =>  @hold_request.doc_delivery_data['chapterTitle'],
+        "Author" =>  @hold_request.doc_delivery_data['author'],
+        "Volume Number" =>  @hold_request.doc_delivery_data['volume'],
+        "Issue" =>  @hold_request.doc_delivery_data['issue'],
+        "Date" => @hold_request.doc_delivery_data['date'],
+        "Additional Notes or Instructions" => @hold_request.doc_delivery_data['requestNotes'],
+        "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
+      },
       "Patron Information" => {
         "Patron Name" => format(@hold_request.patron.names),
         "Patron Email" => format(@hold_request.patron.emails) +
@@ -48,18 +60,6 @@ class LibAnswersEmail
         "Catalog URL" => @hold_request.item.bibs
           .map { |bib| "https://#{catalog_domain}/record=b#{bib.id}" }
           .join('; ')
-      },
-      "EDD Information" => {
-        "Email" => @hold_request.doc_delivery_data['emailAddress'],
-        "EDD Pick-up Location" => @hold_request.pickup_location,
-        "Page Numbers" => "#{@hold_request.doc_delivery_data['startPage']} - #{@hold_request.doc_delivery_data['endPage']}",
-        "Chapter/Article Title" =>  @hold_request.doc_delivery_data['chapterTitle'],
-        "Author" =>  @hold_request.doc_delivery_data['author'],
-        "Volume Number" =>  @hold_request.doc_delivery_data['volume'],
-        "Issue" =>  @hold_request.doc_delivery_data['issue'],
-        "Date" => @hold_request.doc_delivery_data['date'],
-        "Additional Notes or Instructions" => @hold_request.doc_delivery_data['requestNotes'],
-        "Requested On" => Time.new.strftime('%A %B %d, %I:%M%P ET')
       }
     }
     @duplicate = @hold_request.is_duplicate?
@@ -127,11 +127,11 @@ class LibAnswersEmail
 
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
-      emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC'] || ''
     when 'my'
-      emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC'] || ''
     when 'sc'
-      emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC']
+      emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC'] || ''
     end
 
     $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
