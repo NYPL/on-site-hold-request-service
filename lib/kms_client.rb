@@ -16,6 +16,9 @@ class KmsClient
   end
 
   def self.aws_kms_client
+    # Work around bug in sam-cli/aws-sdk when running locally:
+    ENV.delete 'AWS_SESSION_TOKEN' if ENV['APP_ENV'] != 'production'
+
     @@kms = Aws::KMS::Client.new(region: 'us-east-1', stub_responses: ENV['APP_ENV'] == 'test') if @@kms.nil?
     @@kms
   end
