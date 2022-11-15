@@ -46,7 +46,7 @@ class LibAnswersEmail
           .map { |bib| "https://#{rc_domain}/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
           .join('; '),
         "Legacy Catalog URL" => @hold_request.item.bibs
-          .map { |bib| "https://#{catalog_domain}/record=b#{bib.id}" }
+          .map { |bib| "https://#{legacy_catalog_domain}/record=b#{bib.id}" }
           .join('; ')
       },
       "EDD Information" => {
@@ -85,7 +85,7 @@ class LibAnswersEmail
 
   ##
   # Get relevant catalog domain
-  def catalog_domain
+  def legacy_catalog_domain
     is_sierra_test? ? 'nypl-sierra-test.nypl.org' : 'catalog.nypl.org'
   end
 
