@@ -115,7 +115,10 @@ class LibAnswersEmail
     end
 
     $logger.debug "LibAnswers email for #{@hold_request.item.location_code}: #{email}"
-    email = ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'] if ENV['APP_ENV'] != 'production'
+    unless ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'].empty?
+      email = ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL']
+      $logger.debug "Redirecting LibAnswers email to #{email}"
+    end
 
     email
   end
@@ -140,6 +143,11 @@ class LibAnswersEmail
       $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
 
       emails = emails.split(',').map(&:strip)
+    end
+
+    unless ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'].empty?
+      $logger.debug "Nullifying BCCs because ENV.DEVELOPMENT_LIB_ANSWERS_EMAIL is set"
+      emails = []
     end
 
     emails

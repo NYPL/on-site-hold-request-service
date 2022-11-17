@@ -21,7 +21,7 @@ Create your own `sam.local.yml`:
 cp sam.example.yml sam.local.yml
 ```
 
-In your `sam.local.yml`, set `DEVELOPMENT_LIB_ANSWERS_EMAIL` to an email you control. When `APP_ENV` is _anything_ other than 'production' (e.g. "development"), the app will only send emails to `DEVELOPMENT_LIB_ANSWERS_EMAIL`. This allows you to invoke the app multiple times without spamming LibAnswers.
+In your `sam.local.yml`, set `DEVELOPMENT_LIB_ANSWERS_EMAIL` to an email you control. When `DEVELOPMENT_LIB_ANSWERS_EMAIL` is set to something, the app will direct all LibAnswers emails to this address and disable BCCs (i.e. the only outgoing emails will be sent to `DEVELOPMENT_LIB_ANSWERS_EMAIL`) This allows you to invoke the app multiple times without spamming LibAnswers or staff on BCC. You can also temporarily add this config to the QA deployment to verify the app after an update.
 
 To run a local server against Sierra Test:
 
