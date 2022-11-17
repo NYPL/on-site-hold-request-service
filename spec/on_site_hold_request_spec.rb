@@ -20,6 +20,8 @@ describe OnSiteHoldRequest do
         headers: {"Content-Type": "application/json"},
         status: 400
       )
+
+    stub_sendgrid
   end
 
   it 'instantiates an EDD OnSiteHoldRequest from params' do

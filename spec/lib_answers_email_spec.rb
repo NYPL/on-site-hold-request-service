@@ -14,6 +14,8 @@ describe LibAnswersEmail do
 
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/12345/holds/requests")
       .to_return(body: '', status: 201)
+
+    stub_sendgrid
   end
 
   describe 'body(:text)' do
@@ -81,6 +83,13 @@ describe LibAnswersEmail do
           ' for an EDD request placed in SCC Training/QA'
         expect(email.email_header).to include(expected)
       end
+    end
+
+    it 'builds relevant sendgrid payload' do
+      payload = email.sendgrid_email_payload
+
+      expect(payload[:reply_to]).to eq({ email: 'user@example.com' })
+      expect(payload[:from]).to eq({ email: 'researchrequests@nypl.org' })
     end
   end
 

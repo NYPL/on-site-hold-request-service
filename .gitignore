@@ -1,2 +1,5 @@
 vendor
 sam.local.yml
+
+*terraform*
+dist.zip
