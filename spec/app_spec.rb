@@ -24,11 +24,6 @@ describe :app, :type => :controller do
 
   describe :handle_event do
     before(:each) do
-      KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {
-        # "Decrypt" by subbing "encrypted" with "decrypted" in string:
-        { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
-      })
-
       stub_request(:post, "#{ENV['SIERRA_OAUTH_URL']}").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
 
       stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/56789/holds/requests")

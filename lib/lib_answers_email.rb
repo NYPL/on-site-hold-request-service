@@ -1,5 +1,6 @@
 require "erb"
-require "aws-sdk-ses"
+require 'sendgrid-ruby'
+include SendGrid
 
 require_relative 'kms_client'
 require_relative 'errors'
@@ -7,8 +8,7 @@ require_relative 'string_util'
 
 class LibAnswersEmail
   EMAIL_ENCODING = "UTF-8"
-  # TODO: Fix issue where @nypl.org are not deliverable from @nypl.org sender
-  EMAIL_SENDER = 'no-reply@mylibrarynyc.org' # researchrequests@nypl.org'
+  EMAIL_SENDER = 'researchrequests@nypl.org'
 
   @@_location_email_mapping = nil
 
@@ -54,11 +54,11 @@ class LibAnswersEmail
         "Location Code" => @hold_request.item.location_code,
         "Bib ID" => format(@hold_request.item.bibs, :id),
         "Item ID" => @hold_request.item.id,
-        "SCC URL" => @hold_request.item.bibs
-          .map { |bib| "https://#{scc_domain}/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
+        "Research Catalog URL" => @hold_request.item.bibs
+          .map { |bib| "https://#{rc_domain}/research/collections/shared-collection-catalog/bib/b#{bib.id}" }
           .join('; '),
-        "Catalog URL" => @hold_request.item.bibs
-          .map { |bib| "https://#{catalog_domain}/record=b#{bib.id}" }
+        "Legacy Catalog URL" => @hold_request.item.bibs
+          .map { |bib| "https://#{legacy_catalog_domain}/record=b#{bib.id}" }
           .join('; ')
       }
     }
@@ -79,13 +79,13 @@ class LibAnswersEmail
 
   ##
   # Get relevant SCC domain
-  def scc_domain
-    is_sierra_test? ? ENV['SCC_TRAINING_DOMAIN'] : 'www.nypl.org'
+  def rc_domain
+    is_sierra_test? ? ENV['RC_QA_DOMAIN'] : 'www.nypl.org'
   end
 
   ##
   # Get relevant catalog domain
-  def catalog_domain
+  def legacy_catalog_domain
     is_sierra_test? ? 'nypl-sierra-test.nypl.org' : 'catalog.nypl.org'
   end
 
@@ -134,9 +134,15 @@ class LibAnswersEmail
       emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC'] || ''
     end
 
-    $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
+    unless emails.empty?
+      emails = KmsClient.new.decrypt emails
 
-    emails.split(',').map(&:strip)
+      $logger.debug "LibAnswers BCC for #{@hold_request.item.location_code}: #{emails}"
+
+      emails = emails.split(',').map(&:strip)
+    end
+
+    emails
   end
 
   ##
@@ -147,7 +153,7 @@ class LibAnswersEmail
     kms_client = KmsClient.new
 
     @@_location_email_mapping = ENV.keys
-      .filter { |key| key.match? /^LIB_ANSWERS_EMAIL_([A-Z]+)$/ }
+      .filter { |key| key.match?(/^LIB_ANSWERS_EMAIL_([A-Z]+)$/) }
       .map { |key| [key.sub('LIB_ANSWERS_EMAIL_', ''), kms_client.decrypt(ENV[key])] }
       .to_h
   end
@@ -157,7 +163,11 @@ class LibAnswersEmail
   def body(which = :html)
     initialize_email_data if @email_data.nil?
 
-    erb = ERB.new(File.read("./email/lib_answers_email.#{which}.erb")).result binding
+    ERB.new(File.read("./email/lib_answers_email.#{which}.erb")).result binding
+  end
+
+  def subject
+    format(@hold_request.item.bibs, :title).truncate(100)
   end
 
   ##
@@ -165,54 +175,54 @@ class LibAnswersEmail
   #
   # Will raise InternalError if error sending email via SES
   def send
-    ses = Aws::SES::Client.new(region: 'us-east-1')
+    request_body = sendgrid_email_payload
 
+    sendgrid = SendGrid::API.new(api_key: KmsClient.new.decrypt(ENV['SENDGRID_API_KEY']))
+    response = sendgrid.client.mail._('send').post(request_body: request_body)
+    if response.status_code.nil? || response.status_code.to_i >= 300
+      $logger.error "Failed to send LibAnswers email via Sendgrid: #{response.status_code} '#{response.body}'"
+    end
+  end
+
+  def sendgrid_email_payload
     recip = destination_email
     if recip.nil? || recip.empty?
       $logger.debug "Destination email unknown. Aborting LibAnswers email."
       return
     end
 
-    # Build the email
-    ses_data = {
-      destination: {
-        to_addresses: [
-          recip
-        ]
+    # See https://docs.sendgrid.com/api-reference/mail-send/mail-send#
+    payload = {
+      from: {
+        email: EMAIL_SENDER
       },
-      message: {
-        body: {
-          html: {
-            charset: EMAIL_ENCODING,
-            data: body(:html)
-          },
-          text: {
-            charset: EMAIL_ENCODING,
-            data: body(:text)
-          },
-        },
-        subject: {
-          charset: EMAIL_ENCODING,
-          data: format(@hold_request.item.bibs, :title).truncate(100)
-        },
+      reply_to: {
+        email: @hold_request.edd_email
       },
-      source: EMAIL_SENDER,
-      reply_to_addresses: [ @hold_request.edd_email ]
+      personalizations: [
+        {
+          to: [
+            { email: recip }
+          ]
+        }
+      ],
+      subject: subject,
+      content: [
+        {
+          type: 'text/plain',
+          value: body(:text)
+        },
+        {
+          type: 'text/html',
+          value: body(:html)
+        }
+      ]
     }
-
-    # Shall we BCC anyone?
-    ses_data[:destination][:bcc_addresses] = bcc_emails unless bcc_emails.empty?
-
-    begin
-      # Send the email
-      $logger.debug "Sending email to #{recip}#{bcc_emails ? ", bcc #{bcc_emails}" : ''}"
-      ses.send_email ses_data
-      $logger.debug "Email sent to #{recip}#{bcc_emails ? ", bcc #{bcc_emails}" : ''}"
-
-    rescue Aws::SES::Errors::ServiceError => error
-      $logger.error "Email not sent. Error message: #{error}"
-      raise InternalError, "Internal error: Issue queueing EDD"
+    unless bcc_emails.empty?
+      payload[:personalizations].first << { bcc: bcc_emails.map { |email| { email: email } } }
     end
+
+    payload
   end
 
   ##
