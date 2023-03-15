@@ -38,6 +38,12 @@ class OnSiteHoldRequest
     ! @data.dig('docDeliveryData', 'emailAddress').nil?
   end
 
+  ##
+  # Is the request a retrieval request?
+  def is_retrieval?
+    @data['requestType'] == 'hold'
+  end
+
   def is_duplicate?
     return @duplicate
   end
@@ -105,9 +111,8 @@ class OnSiteHoldRequest
     hold = {
       'recordType' => 'i',
       'recordNumber' => @data['record'],
-      'pickupLocation' => pickup_location,
-      'note' => 'Onsite EDD Shared Request'
-    }
+      'pickupLocation' => pickup_location
+    }.merge(is_retrieval? ? {} : {'note' => 'Onsite EDD Shared Request'})
     # TODO: Sierra complains about json formatting if `neededBy` doesn't match
     # "ISO 8601 format (yyyy-MM-dd)", so we should reduce precision of
     # `neededBy` when time info is included.
@@ -137,6 +142,7 @@ class OnSiteHoldRequest
   #
   # Uncaught InternalError if error sending email via SES
   def create_libanswers_job
+    return if is_retrieval?
     return unless is_edd?
 
     LibAnswersEmail.create self

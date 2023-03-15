@@ -77,4 +77,70 @@ describe OnSiteHoldRequest do
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
   end
+
+
+  describe 'distinguishing edd and retrieval requests' do
+    params_hold = {
+      'requestType' => 'hold'
+    }
+
+    params_edd = {
+      'requestType' => 'edd'
+    }
+
+    describe 'is_retrieval?' do
+      it 'checks whether the requestType is \'hold\'' do
+        expect(OnSiteHoldRequest.new(params_hold).is_retrieval?).to eq(true)
+        expect(OnSiteHoldRequest.new(params_edd).is_retrieval?).to eq(false)
+      end
+    end
+
+    describe 'create_sierra_hold' do
+      it 'includes EDD note in case of retrieval request' do
+        mock_sierra_client = double(nil)
+        mock_response = double(nil)
+        note =  nil
+        allow(mock_response).to receive(:code).and_return nil
+        allow(mock_response).to receive(:body).and_return nil
+        allow(mock_response).to receive(:error?).and_return nil
+        allow(OnSiteHoldRequest).to receive(:sierra_client).and_return mock_sierra_client
+        allow(mock_sierra_client).to receive(:post) do |*args|
+          note = args[1]["note"]
+          mock_response
+        end
+        OnSiteHoldRequest.new(params_edd).create_sierra_hold
+        expect(note).to eq("Onsite EDD Shared Request")
+      end
+
+      it 'does not include EDD note in case of non-retrieval request' do
+        mock_sierra_client = double(nil)
+        mock_response = double(nil)
+        note =  nil
+        allow(mock_response).to receive(:code).and_return nil
+        allow(mock_response).to receive(:body).and_return nil
+        allow(mock_response).to receive(:error?).and_return nil
+        allow(OnSiteHoldRequest).to receive(:sierra_client).and_return mock_sierra_client
+        allow(mock_sierra_client).to receive(:post) do |*args|
+          note = args[1]["note"]
+          mock_response
+        end
+        OnSiteHoldRequest.new(params_hold).create_sierra_hold
+        expect(note).to eq(nil)
+      end
+    end
+
+    describe 'create_libanswers_job' do
+      it 'returns early in case of retrieval request' do
+        allow(LibAnswersEmail).to receive(:create)
+        expect(LibAnswersEmail).not_to receive(:create)
+        OnSiteHoldRequest.new(params_hold).create_libanswers_job
+      end
+
+      it 'calls LibAnswersEmail for edd request' do
+        allow(LibAnswersEmail).to receive(:create)
+        expect(LibAnswersEmail).not_to receive(:create)
+        OnSiteHoldRequest.new(params_edd).create_libanswers_job
+      end
+  end
+  end
 end
