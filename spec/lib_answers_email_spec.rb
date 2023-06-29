@@ -84,12 +84,64 @@ describe LibAnswersEmail do
         expect(email.email_header).to include(expected)
       end
     end
+  end
+
+  describe 'sendgrid_email_payload' do
+    email = nil
+
+    before(:each) do
+      data = {
+        "record" => 10857004,
+        "patron" => 12345,
+        "docDeliveryData" => {
+          "date" => "date...",
+          "emailAddress" => "user@example.com",
+          "chapterTitle" => "Chapter One",
+          "startPage" => "100",
+          "endPage" => "150",
+          "author" => "Anonymous",
+          "issue" => "Summer 2017",
+          "volume" => "159",
+          "requestNotes" => "..."
+        }
+      }
+      hold_request = OnSiteHoldRequest.new(data)
+      email = LibAnswersEmail.new(hold_request)
+    end
 
     it 'builds relevant sendgrid payload' do
       payload = email.sendgrid_email_payload
 
       expect(payload[:reply_to]).to eq({ email: 'user@example.com' })
       expect(payload[:from]).to eq({ email: 'researchrequests@nypl.org' })
+    end
+
+    it 'does not include bcc if not configured in environment' do
+      payload = email.sendgrid_email_payload
+
+      expect(payload[:personalizations]).to be_a(Array)
+      recips = payload[:personalizations].first
+      expect(recips).to be_a(Hash)
+      expect(recips[:to]).to be_a(Array)
+      expect(recips[:to].first[:email]).to eq('decrypted-lib-answers-email-sasb')
+      expect(recips[:bcc]).to be_nil
+    end
+
+    it 'includes bcc if configured in environment' do
+      # This is an item in mal82, so SASB_BCC applies
+      use_env({
+        'LIB_ANSWERS_EMAIL_SASB_BCC' => Base64.encode64('encrypted-user@example.com')
+      }) do
+        payload = email.sendgrid_email_payload
+
+        expect(payload[:personalizations]).to be_a(Array)
+        recips = payload[:personalizations].first
+        expect(recips).to be_a(Hash)
+        expect(recips[:to]).to be_a(Array)
+        expect(recips[:to].first[:email]).to eq('decrypted-lib-answers-email-sasb')
+        expect(recips[:bcc]).to be_a(Array)
+        expect(recips[:bcc].first[:email]).to eq('decrypted-user@example.com')
+      end
     end
   end
 

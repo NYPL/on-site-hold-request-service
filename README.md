@@ -39,7 +39,7 @@ Note that the invocation will fail if there's already a hold on the item. Manual
 
 ## Contributing
 
-This repo follows a [Development-QA-Master Git Workflow](https://github.com/NYPL/engineering-general/blob/a19c78b028148465139799f09732e7eb10115eef/standards/git-workflow.md#development-qa-master)
+This repo follows a [Main-QA-Production Workflow](https://github.com/NYPL/engineering-general/blob/main/standards/git-workflow.md#main-qa-production)
 
 ## Testing
 

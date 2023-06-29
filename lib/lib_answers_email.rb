@@ -115,7 +115,7 @@ class LibAnswersEmail
     end
 
     $logger.debug "LibAnswers email for #{@hold_request.item.location_code}: #{email}"
-    unless ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'].empty?
+    unless (ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'] || '').empty?
       email = ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL']
       $logger.debug "Redirecting LibAnswers email to #{email}"
     end
@@ -145,7 +145,7 @@ class LibAnswersEmail
       emails = emails.split(',').map(&:strip)
     end
 
-    unless ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'].empty?
+    unless (ENV['DEVELOPMENT_LIB_ANSWERS_EMAIL'] || '').empty?
       $logger.debug "Nullifying BCCs because ENV.DEVELOPMENT_LIB_ANSWERS_EMAIL is set"
       emails = []
     end
@@ -227,7 +227,7 @@ class LibAnswersEmail
       ]
     }
     unless bcc_emails.empty?
-      payload[:personalizations].first << { bcc: bcc_emails.map { |email| { email: email } } }
+      payload[:personalizations].first[:bcc] = bcc_emails.map { |email| { email: email } }
     end
 
     payload
