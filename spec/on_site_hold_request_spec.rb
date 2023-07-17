@@ -12,6 +12,12 @@ describe OnSiteHoldRequest do
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/14468362")
       .to_return(body: File.read('./spec/fixtures/bib-14468362.json'))
 
+    # LPA item fixture:
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items/sierra-nypl/10003893")
+      .to_return(body: File.read('./spec/fixtures/item-10003893.json'))
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/10005886")
+      .to_return(body: File.read('./spec/fixtures/bib-10005886.json'))
+
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/12345/holds/requests")
       .to_return(body: '', status: 201)
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/56789/holds/requests")
@@ -48,6 +54,21 @@ describe OnSiteHoldRequest do
     expect(hold_request.item).to be_a(Item)
     expect(hold_request.item.id).to eq("10857004")
     expect(hold_request.pickup_location).to eq("maedd")
+  end
+
+  it 'routes LPA materials to paedd' do
+    params = {
+      "record" => "10003893",
+      "patron" => "12345",
+      "docDeliveryData" => {
+        "emailAddress" => "user@example.com"
+      }
+    }
+    hold_request = OnSiteHoldRequest.create params
+    expect(hold_request).to be_a(OnSiteHoldRequest)
+    expect(hold_request.item).to be_a(Item)
+    expect(hold_request.item.id).to eq("10003893")
+    expect(hold_request.pickup_location).to eq("paedd")
   end
 
   it 'detects EDD email that differs from patron email' do

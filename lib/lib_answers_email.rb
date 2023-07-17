@@ -103,7 +103,7 @@ class LibAnswersEmail
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
       email = location_email_mapping['SASB']
-    when 'my'
+    when 'pa', 'my' # Note 'my' is being deprecated
       email = location_email_mapping['LPA']
     when 'sc'
       email = location_email_mapping['SC']
@@ -131,7 +131,7 @@ class LibAnswersEmail
     case @hold_request.item.location_code[(0...2)]
     when 'ma'
       emails = ENV['LIB_ANSWERS_EMAIL_SASB_BCC'] || ''
-    when 'my'
+    when 'pa', 'my' # Note 'my' is being deprecated
       emails = ENV['LIB_ANSWERS_EMAIL_LPA_BCC'] || ''
     when 'sc'
       emails = ENV['LIB_ANSWERS_EMAIL_SC_BCC'] || ''
