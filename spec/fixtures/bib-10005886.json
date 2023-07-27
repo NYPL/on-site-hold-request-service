@@ -1,0 +1,493 @@
+{
+  "data": {
+    "id": "10005886",
+    "nyplSource": "sierra-nypl",
+    "nyplType": "bib",
+    "updatedDate": "2023-07-17T14:57:14-04:00",
+    "createdDate": "2008-12-13T15:56:26-05:00",
+    "deletedDate": null,
+    "deleted": false,
+    "locations": [
+      {
+        "code": "scd",
+        "name": "Schomburg Center - Manuscripts & Archives"
+      },
+      {
+        "code": "pam32",
+        "name": "Performing Arts Research Collections - Music"
+      }
+    ],
+    "suppressed": false,
+    "lang": {
+      "code": "eng",
+      "name": "English"
+    },
+    "title": "Aïda : an opera in four acts",
+    "author": "Verdi, Giuseppe, 1813-1901.",
+    "materialType": {
+      "code": "a  ",
+      "value": "BOOK/TEXT"
+    },
+    "bibLevel": {
+      "code": "m",
+      "value": "MONOGRAPH"
+    },
+    "publishYear": 1900,
+    "catalogDate": "2000-12-15",
+    "country": {
+      "code": "nyu",
+      "name": "New York (State)"
+    },
+    "normTitle": "aïda an opera in four acts",
+    "normAuthor": "verdi giuseppe 1813 1901",
+    "standardNumbers": [],
+    "controlNumber": "NYPG005000028-B",
+    "fixedFields": {
+      "24": {
+        "label": "Language",
+        "value": "eng",
+        "display": "English"
+      },
+      "25": {
+        "label": "Skip",
+        "value": "0",
+        "display": null
+      },
+      "26": {
+        "label": "Location",
+        "value": "multi",
+        "display": null
+      },
+      "27": {
+        "label": "",
+        "value": "2",
+        "display": null
+      },
+      "28": {
+        "label": "Cat. Date",
+        "value": "2000-12-15",
+        "display": null
+      },
+      "29": {
+        "label": "Bib Level",
+        "value": "m",
+        "display": "MONOGRAPH"
+      },
+      "30": {
+        "label": "Material Type",
+        "value": "a  ",
+        "display": "BOOK/TEXT"
+      },
+      "31": {
+        "label": "Bib Code 3",
+        "value": "-",
+        "display": null
+      },
+      "80": {
+        "label": "Record Type",
+        "value": "b",
+        "display": null
+      },
+      "81": {
+        "label": "Record Number",
+        "value": "10005886",
+        "display": null
+      },
+      "83": {
+        "label": "Created Date",
+        "value": "2008-12-13T15:56:26Z",
+        "display": null
+      },
+      "84": {
+        "label": "Updated Date",
+        "value": "2023-07-17T14:57:14Z",
+        "display": null
+      },
+      "85": {
+        "label": "No. of Revisions",
+        "value": "19",
+        "display": null
+      },
+      "86": {
+        "label": "Agency",
+        "value": "1",
+        "display": null
+      },
+      "89": {
+        "label": "Country",
+        "value": "nyu",
+        "display": "New York (State)"
+      },
+      "98": {
+        "label": "",
+        "value": "2021-11-05T00:28:58Z",
+        "display": null
+      },
+      "107": {
+        "label": "MARC Type",
+        "value": " ",
+        "display": null
+      }
+    },
+    "varFields": [
+      {
+        "fieldTag": "a",
+        "marcTag": "100",
+        "ind1": "1",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Verdi, Giuseppe,"
+          },
+          {
+            "tag": "d",
+            "content": "1813-1901."
+          }
+        ]
+      },
+      {
+        "fieldTag": "b",
+        "marcTag": "700",
+        "ind1": "1",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Ghislanzoni, Antonio,"
+          },
+          {
+            "tag": "d",
+            "content": "1824-1893."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "650",
+        "ind1": " ",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Operas"
+          },
+          {
+            "tag": "v",
+            "content": "Librettos."
+          }
+        ]
+      },
+      {
+        "fieldTag": "d",
+        "marcTag": "655",
+        "ind1": " ",
+        "ind2": "7",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Librettos."
+          },
+          {
+            "tag": "2",
+            "content": "aat"
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "NNSZ00507100"
+          }
+        ]
+      },
+      {
+        "fieldTag": "l",
+        "marcTag": "035",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "(WaOLN)nyp0205876"
+          }
+        ]
+      },
+      {
+        "fieldTag": "n",
+        "marcTag": "500",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "On cover: Metropolitan Opera House. Grand opera libretto."
+          }
+        ]
+      },
+      {
+        "fieldTag": "o",
+        "marcTag": "001",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "NYPG005000028-B",
+        "subfields": null
+      },
+      {
+        "fieldTag": "p",
+        "marcTag": "260",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "New York :"
+          },
+          {
+            "tag": "b",
+            "content": "F. Rullman,"
+          },
+          {
+            "tag": "c",
+            "content": "[190-?]"
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "Sc Rare F 84-6"
+          }
+        ]
+      },
+      {
+        "fieldTag": "q",
+        "marcTag": "852",
+        "ind1": "8",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "h",
+            "content": "*MZ (Verdi, G. Aida)"
+          }
+        ]
+      },
+      {
+        "fieldTag": "r",
+        "marcTag": "300",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "39 p. ;"
+          },
+          {
+            "tag": "c",
+            "content": "26 cm."
+          }
+        ]
+      },
+      {
+        "fieldTag": "t",
+        "marcTag": "245",
+        "ind1": "1",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "Aïda :"
+          },
+          {
+            "tag": "b",
+            "content": "an opera in four acts /"
+          },
+          {
+            "tag": "c",
+            "content": "music by Giuseppe Verdi ;book by Antonio Ghizlandoni."
+          }
+        ]
+      },
+      {
+        "fieldTag": "v",
+        "marcTag": "959",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": ".b10059155"
+          },
+          {
+            "tag": "b",
+            "content": "07-18-08"
+          },
+          {
+            "tag": "c",
+            "content": "07-29-91"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "856",
+        "ind1": "4",
+        "ind2": "0",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "u",
+            "content": "https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=Aïda+:+an+opera+in+four+acts+/&Site=SCHRB&CallNumber=Sc+Rare+F+84-6&Author=Verdi,+Giuseppe,&ItemPlace=New+York+:&ItemPublisher=F.+Rullman,&Date=[190-?]&ItemInfo3=https://catalog.nypl.org/record=b10005886&ReferenceNumber=b100058863&ItemInfo1=USE+IN+LIBRARY&ItemNumber=33433076159593&ItemISxN=i10003892x&Genre=Book-text&Location=Schomburg+Center"
+          },
+          {
+            "tag": "z",
+            "content": "Request Access to Special Collections Material"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "008",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "850618q19001909nyu           000 d eng dcam a ",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "005",
+        "ind1": " ",
+        "ind2": " ",
+        "content": "20001116192511.1",
+        "subfields": null
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "040",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "NN"
+          },
+          {
+            "tag": "c",
+            "content": "NN"
+          },
+          {
+            "tag": "d",
+            "content": "WaOLN"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "041",
+        "ind1": "1",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "eng"
+          },
+          {
+            "tag": "h",
+            "content": "ita"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "997",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "sm"
+          },
+          {
+            "tag": "a",
+            "content": "pm"
+          },
+          {
+            "tag": "b",
+            "content": "12-15-00"
+          },
+          {
+            "tag": "c",
+            "content": "m"
+          },
+          {
+            "tag": "d",
+            "content": "a"
+          },
+          {
+            "tag": "e",
+            "content": "-"
+          },
+          {
+            "tag": "f",
+            "content": "eng"
+          },
+          {
+            "tag": "g",
+            "content": "nyu"
+          },
+          {
+            "tag": "h",
+            "content": "0"
+          }
+        ]
+      },
+      {
+        "fieldTag": "y",
+        "marcTag": "910",
+        "ind1": " ",
+        "ind2": " ",
+        "content": null,
+        "subfields": [
+          {
+            "tag": "a",
+            "content": "RL"
+          }
+        ]
+      },
+      {
+        "fieldTag": "_",
+        "marcTag": null,
+        "ind1": null,
+        "ind2": null,
+        "content": "00000cam  2200253 a 4500",
+        "subfields": null
+      }
+    ]
+  }
+}
