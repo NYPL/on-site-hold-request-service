@@ -108,7 +108,10 @@ class OnSiteHoldRequest
   def create_sierra_hold
     patron_id = @data['patron']
     hold = {
-      'statgroup' => is_retrieval?() ? 501 : 502,
+      # statgroup 501 indicates physical request, 502 is onsite edd.
+      # these codes were added to generate reports on usage of online request
+      # buttons.
+      'statgroup' => is_retrieval? ? 501 : 502,
       'recordType' => 'i',
       'recordNumber' => @data['record'],
       'pickupLocation' => pickup_location
