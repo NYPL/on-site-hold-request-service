@@ -28,10 +28,13 @@ class OnSiteHoldRequest
     rescue SierraHoldAlreadyCreatedError => e
       @duplicate = true
     end
-    create_libanswers_job if is_edd?
+    LibAnswersEmail.create self if is_edd? && is_patron_barcode_allowed?
     self
   end
 
+  def is_patron_barcode_allowed?
+   ! ENV["QA_TESTING_BARCODES"].split(",").include? patron.barcodes
+  end
   ##
   # Is the request an EDD request?
   def is_edd?

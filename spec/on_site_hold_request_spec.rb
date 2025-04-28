@@ -153,6 +153,21 @@ describe OnSiteHoldRequest do
     end
 
     describe 'create_libanswers_job' do
+      it 'does not send lib answers email if barcode is qa testing barcode'do
+        params = {
+        "record" => "10857004",
+        "patron" => "12345",
+        "requestType" => "edd",
+        "docDeliveryData" => {
+          "date" => "date..."
+        }
+      }
+      use_env({"LIB_ANSWERS_SUPPRESSED_BARCODE" => "12345678901234"}) do
+        allow(LibAnswersEmail).to receive(:create)
+        OnSiteHoldRequest.new(params).create_libanswers_job
+        expect(LibAnswersEmail).not_to receive(:create)
+      end 
+    end 
       it 'returns early in case of retrieval request' do
         expect(LibAnswersEmail).not_to receive(:create)
         OnSiteHoldRequest.new(params_hold).create_libanswers_job
