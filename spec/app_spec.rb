@@ -57,13 +57,13 @@ describe :app, :type => :controller do
         event: {
           "path" => '/api/v0.1/on-site-hold-requests',
           "httpMethod" => 'POST',
-          "body" => '{ "record": 12345, "patron": 56789 }'
+          "body" => '{ "record": 12345, "patron": 56789, "requestType": "hold" }'
         },
         context: {}
       )
-
       expect(response[:statusCode]).to eq(201)
       expect(response[:body]).to be_a(String)
+
       expect(JSON.parse(response[:body])).to be_a(Hash)
       expect(JSON.parse(response[:body])['statusCode']).to eq(201)
     end
@@ -73,7 +73,7 @@ describe :app, :type => :controller do
         event: {
           "path" => '/api/v0.1/on-site-hold-requests',
           "httpMethod" => 'POST',
-          "body" => '{ "record": 12345, "patron": 55555 }'
+          "body" => '{ "record": 12345, "patron": 55555, "requestType": "hold" }'
         },
         context: {}
       )
