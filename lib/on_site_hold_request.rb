@@ -12,7 +12,8 @@ class OnSiteHoldRequest
   attr_accessor :duplicate
   @@_sierra_client = nil
 
-  def initialize (data)
+  def initialize (data, email_client = LibAnswersEmail)
+    @lib_answers_email_client = email_client
     @data = data
     @duplicate = false
   end
@@ -23,6 +24,7 @@ class OnSiteHoldRequest
   #      if hold created successfully and it's an EDD request
   #   2) place EDD request in LibAnswers
   def create
+    puts 'create'
     begin
       create_sierra_hold
     rescue SierraHoldAlreadyCreatedError => e
@@ -35,7 +37,7 @@ class OnSiteHoldRequest
   ##
   # Is the request an EDD request?
   def is_edd?
-    ! @data.dig('docDeliveryData', 'emailAddress').nil?
+    ! is_retrieval?
   end
 
   ##
@@ -145,10 +147,9 @@ class OnSiteHoldRequest
   #
   # Uncaught InternalError if error sending email via SES
   def create_libanswers_job
-    return if is_retrieval?
     return unless is_edd?
 
-    LibAnswersEmail.create self
+    @lib_answers_email_client.create self
   end
 
   ##
@@ -161,6 +162,7 @@ class OnSiteHoldRequest
   #
   # Otherwise returns new OnSiteHoldRequest instance
   def self.create(params = {})
+  puts 'self.create'
     [ 'patron', 'record' ].each do |param|
       # Ensure set
       raise ParameterError, "#{param} is required" unless params[param]

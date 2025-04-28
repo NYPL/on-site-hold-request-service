@@ -106,7 +106,8 @@ describe OnSiteHoldRequest do
     }
 
     params_edd = {
-      'requestType' => 'edd'
+      'requestType' => 'edd',
+      'record' => 10857004
     }
 
     describe 'is_retrieval?' do
@@ -117,7 +118,7 @@ describe OnSiteHoldRequest do
     end
 
     describe 'create_sierra_hold' do
-      it 'includes EDD note in case of retrieval request' do
+      it 'includes EDD note in case of edd request' do
         mock_sierra_client = double(nil)
         mock_response = double(nil)
         note =  nil
@@ -125,6 +126,7 @@ describe OnSiteHoldRequest do
         allow(mock_response).to receive(:body).and_return nil
         allow(mock_response).to receive(:error?).and_return nil
         allow(OnSiteHoldRequest).to receive(:sierra_client).and_return mock_sierra_client
+
         allow(mock_sierra_client).to receive(:post) do |*args|
           note = args[1]["note"]
           mock_response
@@ -133,7 +135,7 @@ describe OnSiteHoldRequest do
         expect(note).to eq("Onsite EDD Shared Request")
       end
 
-      it 'does not include EDD note in case of non-retrieval request' do
+      it 'does not include EDD note in case of retrieval request' do
         mock_sierra_client = double(nil)
         mock_response = double(nil)
         note =  nil
@@ -158,9 +160,9 @@ describe OnSiteHoldRequest do
       end
 
       it 'calls LibAnswersEmail for edd request' do
-        allow(LibAnswersEmail).to receive(:create)
-        expect(LibAnswersEmail).not_to receive(:create)
-        OnSiteHoldRequest.new(params_edd).create_libanswers_job
+        LibAnswersDouble = double("LibAnswersEmail")
+        expect(LibAnswersDouble).to receive(:create)
+        OnSiteHoldRequest.new(params_edd, LibAnswersDouble).create_libanswers_job
       end
   end
   end
