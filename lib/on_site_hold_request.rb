@@ -23,7 +23,6 @@ class OnSiteHoldRequest
   #      if hold created successfully and it's an EDD request
   #   2) place EDD request in LibAnswers
   def create
-    puts 'create'
     begin
       create_sierra_hold
     rescue SierraHoldAlreadyCreatedError => e
@@ -161,7 +160,6 @@ class OnSiteHoldRequest
   #
   # Otherwise returns new OnSiteHoldRequest instance
   def self.create(params = {})
-  puts 'self.create'
     [ 'patron', 'record' ].each do |param|
       # Ensure set
       raise ParameterError, "#{param} is required" unless params[param]
