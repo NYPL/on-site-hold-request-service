@@ -86,8 +86,8 @@ class OnSiteHoldRequest
       case item.location_code[(0...2)]
       when 'ma'
         'maedd'
-      when 'pa', 'my' # Note 'my' is being deprecated
-        'paedd'
+      when 'my'
+        'myedd'
       when 'sc'
         'scedd'
       end
