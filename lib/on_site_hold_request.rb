@@ -28,8 +28,13 @@ class OnSiteHoldRequest
     rescue SierraHoldAlreadyCreatedError => e
       @duplicate = true
     end
-    create_libanswers_job if is_edd?
+    create_libanswers_job if is_edd? and is_barcode_suppressed?
     self
+  end
+
+  def is_barcode_suppressed?
+    suppressed_barcodes = ENV["LIB_ANSWERS_SUPPRESSED_BARCODE"].split(",")
+    return suppressed_barcodes.include? self.patron.barcodes[0]
   end
 
   ##

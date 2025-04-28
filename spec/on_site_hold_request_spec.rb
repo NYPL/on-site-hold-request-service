@@ -99,6 +99,21 @@ describe OnSiteHoldRequest do
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
   end
 
+  it 'does not send lib answers email if barcode is suppressed' do
+    params = {
+      "record" => "10857004",
+      "patron" => "12345",
+      "docDeliveryData" => {
+        "date" => "date...",
+        "emailAddress" => "example@example.com"
+      }
+    }
+    use_env({"LIB_ANSWERS_SUPPRESSED_BARCODE" => "12345678901234"}) do
+      allow(LibAnswersEmail).to receive(:create)
+      OnSiteHoldRequest.new(params).create_libanswers_job
+      expect(LibAnswersEmail).not_to receive(:create)
+    end 
+  end
 
   describe 'distinguishing edd and retrieval requests' do
     params_hold = {
