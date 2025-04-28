@@ -12,8 +12,7 @@ class OnSiteHoldRequest
   attr_accessor :duplicate
   @@_sierra_client = nil
 
-  def initialize (data, email_client = LibAnswersEmail)
-    @lib_answers_email_client = email_client
+  def initialize (data)
     @data = data
     @duplicate = false
   end
@@ -149,7 +148,7 @@ class OnSiteHoldRequest
   def create_libanswers_job
     return unless is_edd?
 
-    @lib_answers_email_client.create self
+  LibAnswersEmail.create self
   end
 
   ##

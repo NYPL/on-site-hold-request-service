@@ -154,15 +154,13 @@ describe OnSiteHoldRequest do
 
     describe 'create_libanswers_job' do
       it 'returns early in case of retrieval request' do
-        allow(LibAnswersEmail).to receive(:create)
         expect(LibAnswersEmail).not_to receive(:create)
         OnSiteHoldRequest.new(params_hold).create_libanswers_job
       end
 
       it 'calls LibAnswersEmail for edd request' do
-        LibAnswersDouble = double("LibAnswersEmail")
-        expect(LibAnswersDouble).to receive(:create)
-        OnSiteHoldRequest.new(params_edd, LibAnswersDouble).create_libanswers_job
+        expect(LibAnswersEmail).to receive(:create)
+        OnSiteHoldRequest.new(params_edd).create_libanswers_job
       end
   end
   end
