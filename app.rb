@@ -51,7 +51,7 @@ end
 def handle_create_hold_request(event)
   params = parse_body event
 
-  $logger.debug "OnSiteHoldRequest.new #{params.to_json}"
+  $logger.debug "OnSiteHoldRequest.new(#{params.to_json}).process_hold()"
 
   response = OnSiteHoldRequest.new(params).process_hold()
 
