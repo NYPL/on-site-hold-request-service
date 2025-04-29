@@ -22,7 +22,7 @@ class OnSiteHoldRequest
   #   1) Create hold in Sierra, and..
   #      if hold created successfully and it's an EDD request
   #   2) place EDD request in LibAnswers
-  def create
+  def process_hold
     begin
       create_sierra_hold
     rescue SierraHoldAlreadyCreatedError => e
@@ -176,7 +176,7 @@ class OnSiteHoldRequest
     })
 
     begin
-      self.new(data).create
+      self.new(data).process_hold
     rescue SierraRecordUnavailableError => e
       raise ParameterError, "Item not available: #{data['record']}"
     rescue SierraError => e
