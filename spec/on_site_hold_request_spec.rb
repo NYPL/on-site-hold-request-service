@@ -46,7 +46,7 @@ describe OnSiteHoldRequest do
         "requestNotes" => "..."
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params).process_hold
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.patron).to be_a(NyplPatron)
     expect(hold_request.is_edd?).to eq(true)
@@ -64,7 +64,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "user@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params).process_hold
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.item).to be_a(Item)
     expect(hold_request.item.id).to eq("10003893")
@@ -80,7 +80,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "user@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params).process_hold
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(true)
   end
@@ -94,7 +94,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "example@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params).process_hold
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
   end
@@ -102,10 +102,13 @@ describe OnSiteHoldRequest do
 
   describe 'distinguishing edd and retrieval requests' do
     params_hold = {
-      'requestType' => 'hold'
+      "patron" => "12345",
+      'requestType' => 'hold',
+      'record' => 10857004
     }
 
     params_edd = {
+      "patron" => "12345",
       'requestType' => 'edd',
       'record' => 10857004
     }
