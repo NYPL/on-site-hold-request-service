@@ -9,6 +9,8 @@ describe OnSiteHoldRequest do
       .to_return(body: File.read('./spec/fixtures/item-10857004.json'))
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}patrons/12345")
       .to_return(body: File.read('./spec/fixtures/patron-12345.json'))
+      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}patrons/121212")
+      .to_return(body: File.read('./spec/fixtures/patron-121212.json'))
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/14468362")
       .to_return(body: File.read('./spec/fixtures/bib-14468362.json'))
 
@@ -19,6 +21,8 @@ describe OnSiteHoldRequest do
       .to_return(body: File.read('./spec/fixtures/bib-10005886.json'))
 
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/12345/holds/requests")
+      .to_return(body: '', status: 201)
+    stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/121212/holds/requests")
       .to_return(body: '', status: 201)
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/56789/holds/requests")
       .to_return(
@@ -99,6 +103,40 @@ describe OnSiteHoldRequest do
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
   end
 
+  describe 'qa testing barcode' do
+    it 'does not send lib answers email if barcode is qa testing barcode'do
+        params = {
+        "record" => "10857004",
+        # the stubbed patron request for this id returns the qa testing barcode
+        "patron" => "121212",
+        "requestType" => "edd",
+        "docDeliveryData" => {
+          "date" => "date..."
+        }
+      }
+        allow(LibAnswersEmail).to receive(:create)
+        hold_request = OnSiteHoldRequest.new(params)
+        expect(hold_request.is_patron_barcode_allowed?).to eq(false)
+        hold_request.process_hold
+        expect(LibAnswersEmail).not_to receive(:create)
+    end 
+
+    it 'does send lib answers email if barcode is not qa testing barcode'do
+        params = {
+        "record" => "10857004",
+        "patron" => "12345",
+        "requestType" => "edd",
+        "docDeliveryData" => {
+          "date" => "date..."
+        }
+      }
+        hold_request = OnSiteHoldRequest.new(params)
+        allow(LibAnswersEmail).to receive(:create)
+        expect(hold_request.is_patron_barcode_allowed?).to eq(true)
+        expect(LibAnswersEmail).to receive(:create)
+        hold_request.process_hold
+    end 
+  end 
 
   describe 'distinguishing edd and retrieval requests' do
     params_hold = {
@@ -156,21 +194,6 @@ describe OnSiteHoldRequest do
     end
 
     describe 'create_libanswers_job' do
-      it 'does not send lib answers email if barcode is qa testing barcode'do
-        params = {
-        "record" => "10857004",
-        "patron" => "12345",
-        "requestType" => "edd",
-        "docDeliveryData" => {
-          "date" => "date..."
-        }
-      }
-      use_env({"LIB_ANSWERS_SUPPRESSED_BARCODE" => "12345678901234"}) do
-        allow(LibAnswersEmail).to receive(:create)
-        OnSiteHoldRequest.new(params).create_libanswers_job
-        expect(LibAnswersEmail).not_to receive(:create)
-      end 
-    end 
       it 'returns early in case of retrieval request' do
         expect(LibAnswersEmail).not_to receive(:create)
         OnSiteHoldRequest.new(params_hold).create_libanswers_job

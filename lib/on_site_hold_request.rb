@@ -24,7 +24,7 @@ class OnSiteHoldRequest
       'record' => params['record'].to_i,
       'patron' => params['patron'].to_i
     })
-
+    
     @data = data
     @duplicate = false
   end
@@ -55,7 +55,7 @@ class OnSiteHoldRequest
   end
 
   def is_patron_barcode_allowed?
-   ! ENV["QA_TESTING_BARCODES"].split(",").include? patron.barcodes
+   !(ENV["QA_TESTING_BARCODE"] === patron.barcodes[0])
   end
   ##
   # Is the request an EDD request?
@@ -171,8 +171,7 @@ class OnSiteHoldRequest
   # Uncaught InternalError if error sending email via SES
   def create_libanswers_job
     return unless is_edd?
-
-  LibAnswersEmail.create self
+    LibAnswersEmail.create self
   end
 
   ##
