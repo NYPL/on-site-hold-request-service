@@ -50,7 +50,7 @@ describe OnSiteHoldRequest do
         "requestNotes" => "..."
       }
     }
-    hold_request = OnSiteHoldRequest.new(params).process_hold
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.patron).to be_a(NyplPatron)
     expect(hold_request.is_edd?).to eq(true)
@@ -68,7 +68,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "user@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.new(params).process_hold
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.item).to be_a(Item)
     expect(hold_request.item.id).to eq("10003893")
@@ -84,7 +84,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "user@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.new(params).process_hold
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(true)
   end
@@ -98,7 +98,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "example@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.new(params).process_hold
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
   end

@@ -45,8 +45,7 @@ class OnSiteHoldRequest
       @duplicate = true
     end
     begin
-    create_libanswers_job if is_edd? && is_patron_barcode_allowed?
-    self
+      create_libanswers_job if is_edd? && is_patron_barcode_allowed?
     rescue SierraRecordUnavailableError => e
       raise ParameterError, "Item not available: #{data['record']}"
     rescue SierraError => e
