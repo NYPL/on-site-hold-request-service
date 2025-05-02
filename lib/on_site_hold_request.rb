@@ -142,8 +142,6 @@ class OnSiteHoldRequest
 
   ##
   # Attempt to queue EDD job in LibAnswers
-  #
-  # Uncaught InternalError if error sending email via SES
   def create_libanswers_job
     return if is_retrieval?
     return unless is_edd?
