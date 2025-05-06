@@ -9,6 +9,8 @@ describe OnSiteHoldRequest do
       .to_return(body: File.read('./spec/fixtures/item-10857004.json'))
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}patrons/12345")
       .to_return(body: File.read('./spec/fixtures/patron-12345.json'))
+      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}patrons/121212")
+      .to_return(body: File.read('./spec/fixtures/patron-121212.json'))
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/14468362")
       .to_return(body: File.read('./spec/fixtures/bib-14468362.json'))
 
@@ -19,6 +21,8 @@ describe OnSiteHoldRequest do
       .to_return(body: File.read('./spec/fixtures/bib-10005886.json'))
 
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/12345/holds/requests")
+      .to_return(body: '', status: 201)
+    stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/121212/holds/requests")
       .to_return(body: '', status: 201)
     stub_request(:post, "#{ENV['SIERRA_API_BASE_URL']}patrons/56789/holds/requests")
       .to_return(
@@ -46,7 +50,7 @@ describe OnSiteHoldRequest do
         "requestNotes" => "..."
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.patron).to be_a(NyplPatron)
     expect(hold_request.is_edd?).to eq(true)
@@ -64,7 +68,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "user@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.item).to be_a(Item)
     expect(hold_request.item.id).to eq("10003893")
@@ -80,7 +84,7 @@ describe OnSiteHoldRequest do
         "emailAddress" => "user@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(true)
   end
@@ -94,19 +98,57 @@ describe OnSiteHoldRequest do
         "emailAddress" => "example@example.com"
       }
     }
-    hold_request = OnSiteHoldRequest.create params
+    hold_request = OnSiteHoldRequest.new(params)
     expect(hold_request).to be_a(OnSiteHoldRequest)
     expect(hold_request.edd_email_differs_from_patron_email?).to eq(false)
   end
 
+  describe 'qa testing barcode' do
+    it 'does not send lib answers email if barcode is qa testing barcode'do
+        params = {
+        "record" => "10857004",
+        # the stubbed patron request for this id returns the qa testing barcode
+        "patron" => "121212",
+        "requestType" => "edd",
+        "docDeliveryData" => {
+          "date" => "date..."
+        }
+      }
+        allow(LibAnswersEmail).to receive(:create)
+        hold_request = OnSiteHoldRequest.new(params)
+        expect(hold_request.is_patron_barcode_allowed?).to eq(false)
+        hold_request.process_hold
+        expect(LibAnswersEmail).not_to receive(:create)
+    end 
+
+    it 'does send lib answers email if barcode is not qa testing barcode'do
+        params = {
+        "record" => "10857004",
+        "patron" => "12345",
+        "requestType" => "edd",
+        "docDeliveryData" => {
+          "date" => "date..."
+        }
+      }
+        hold_request = OnSiteHoldRequest.new(params)
+        allow(LibAnswersEmail).to receive(:create)
+        expect(hold_request.is_patron_barcode_allowed?).to eq(true)
+        expect(LibAnswersEmail).to receive(:create)
+        hold_request.process_hold
+    end 
+  end 
 
   describe 'distinguishing edd and retrieval requests' do
     params_hold = {
-      'requestType' => 'hold'
+      "patron" => "12345",
+      'requestType' => 'hold',
+      'record' => 10857004
     }
 
     params_edd = {
-      'requestType' => 'edd'
+      "patron" => "12345",
+      'requestType' => 'edd',
+      'record' => 10857004
     }
 
     describe 'is_retrieval?' do
@@ -117,7 +159,7 @@ describe OnSiteHoldRequest do
     end
 
     describe 'create_sierra_hold' do
-      it 'includes EDD note in case of retrieval request' do
+      it 'includes EDD note in case of edd request' do
         mock_sierra_client = double(nil)
         mock_response = double(nil)
         note =  nil
@@ -125,6 +167,7 @@ describe OnSiteHoldRequest do
         allow(mock_response).to receive(:body).and_return nil
         allow(mock_response).to receive(:error?).and_return nil
         allow(OnSiteHoldRequest).to receive(:sierra_client).and_return mock_sierra_client
+
         allow(mock_sierra_client).to receive(:post) do |*args|
           note = args[1]["note"]
           mock_response
@@ -133,7 +176,7 @@ describe OnSiteHoldRequest do
         expect(note).to eq("Onsite EDD Shared Request")
       end
 
-      it 'does not include EDD note in case of non-retrieval request' do
+      it 'does not include EDD note in case of retrieval request' do
         mock_sierra_client = double(nil)
         mock_response = double(nil)
         note =  nil
@@ -152,14 +195,12 @@ describe OnSiteHoldRequest do
 
     describe 'create_libanswers_job' do
       it 'returns early in case of retrieval request' do
-        allow(LibAnswersEmail).to receive(:create)
         expect(LibAnswersEmail).not_to receive(:create)
         OnSiteHoldRequest.new(params_hold).create_libanswers_job
       end
 
       it 'calls LibAnswersEmail for edd request' do
-        allow(LibAnswersEmail).to receive(:create)
-        expect(LibAnswersEmail).not_to receive(:create)
+        expect(LibAnswersEmail).to receive(:create)
         OnSiteHoldRequest.new(params_edd).create_libanswers_job
       end
   end

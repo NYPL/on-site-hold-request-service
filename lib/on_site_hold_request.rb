@@ -12,7 +12,19 @@ class OnSiteHoldRequest
   attr_accessor :duplicate
   @@_sierra_client = nil
 
-  def initialize (data)
+  def initialize (params = {})
+    [ 'patron', 'record' ].each do |param|
+      # Ensure set
+      raise ParameterError, "#{param} is required" unless params[param]
+      # Ensure numeric:
+      raise ParameterError, "#{param} isn't numeric" unless params[param].to_i.to_s == params[param].to_s
+    end
+
+    data = params.merge({
+      'record' => params['record'].to_i,
+      'patron' => params['patron'].to_i
+    })
+    
     @data = data
     @duplicate = false
   end
@@ -22,20 +34,32 @@ class OnSiteHoldRequest
   #   1) Create hold in Sierra, and..
   #      if hold created successfully and it's an EDD request
   #   2) place EDD request in LibAnswers
-  def create
+    # Will raise:
+  #  - ParameterError if Sierra reports item 'not available'
+  #  - SierraHoldAlreadyCreatedError if hold already placed
+  #  - SierraError if Sierra reports any other error
+  def process_hold
     begin
       create_sierra_hold
     rescue SierraHoldAlreadyCreatedError => e
       @duplicate = true
     end
-    create_libanswers_job if is_edd?
-    self
+    begin
+      create_libanswers_job if is_edd? && is_patron_barcode_allowed?
+    rescue SierraRecordUnavailableError => e
+      raise ParameterError, "Item not available: #{data['record']}"
+    rescue SierraError => e
+      raise InternalError, "Internal error: Unspecified error placing hold"
+    end
   end
 
+  def is_patron_barcode_allowed?
+   !(ENV["QA_TESTING_BARCODE"] === patron.barcodes[0])
+  end
   ##
   # Is the request an EDD request?
   def is_edd?
-    ! @data.dig('docDeliveryData', 'emailAddress').nil?
+    ! is_retrieval?
   end
 
   ##
@@ -145,41 +169,8 @@ class OnSiteHoldRequest
   #
   # Uncaught InternalError if error sending email via SES
   def create_libanswers_job
-    return if is_retrieval?
     return unless is_edd?
-
     LibAnswersEmail.create self
-  end
-
-  ##
-  # Create new OnSiteHoldRequest
-  #
-  # Will raise:
-  #  - ParameterError if Sierra reports item 'not available'
-  #  - SierraHoldAlreadyCreatedError if hold already placed
-  #  - SierraError if Sierra reports any other error
-  #
-  # Otherwise returns new OnSiteHoldRequest instance
-  def self.create(params = {})
-    [ 'patron', 'record' ].each do |param|
-      # Ensure set
-      raise ParameterError, "#{param} is required" unless params[param]
-      # Ensure numeric:
-      raise ParameterError, "#{param} isn't numeric" unless params[param].to_i.to_s == params[param].to_s
-    end
-
-    data = params.merge({
-      'record' => params['record'].to_i,
-      'patron' => params['patron'].to_i
-    })
-
-    begin
-      self.new(data).create
-    rescue SierraRecordUnavailableError => e
-      raise ParameterError, "Item not available: #{data['record']}"
-    rescue SierraError => e
-      raise InternalError, "Internal error: Unspecified error placing hold"
-    end
   end
 
   ##
