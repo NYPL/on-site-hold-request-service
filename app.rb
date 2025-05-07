@@ -51,11 +51,11 @@ end
 def handle_create_hold_request(event)
   params = parse_body event
 
-  $logger.debug "OnSiteHoldRequest.create #{params.to_json}"
+  $logger.debug "OnSiteHoldRequest.new(#{params.to_json}).process_hold()"
+  hold_request = OnSiteHoldRequest.new(params)
+  hold_request.process_hold()
 
-  response = OnSiteHoldRequest.create params
-
-  response.is_duplicate? ? {
+  hold_request.is_duplicate? ? {
     statusCode: 200,
     message: "Hold already created"
   } : {
