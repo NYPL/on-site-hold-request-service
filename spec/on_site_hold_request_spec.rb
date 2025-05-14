@@ -1,3 +1,4 @@
+require_relative './spec_helper'
 require_relative '../lib/on_site_hold_request'
 
 describe OnSiteHoldRequest do
