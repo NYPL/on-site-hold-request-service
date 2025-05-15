@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'nypl_log_formatter'
 require 'webmock/rspec'
 require 'aws-sdk-kms'
