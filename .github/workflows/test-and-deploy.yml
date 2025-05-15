@@ -27,6 +27,10 @@ jobs:
           aws-region: us-east-1
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
+      - name: Install gems
+        run: |
+          bundle config set deployment true
+          bundle install
       - name: Deploy app to QA
         run: |
           terraform -chdir=provisioning/qa init -input=false
@@ -46,6 +50,10 @@ jobs:
           aws-region: us-east-1
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
+      - name: Install gems
+        run: |
+          bundle config set deployment true
+          bundle install
       - name: Deploy app to Production
         run: |
           terraform -chdir=provisioning/production init -input=false
