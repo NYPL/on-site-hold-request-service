@@ -27,6 +27,7 @@ jobs:
           aws-region: us-east-1
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
+      - uses: ruby/setup-ruby@v1
       - name: Install gems
         run: |
           bundle config set deployment true
@@ -50,6 +51,7 @@ jobs:
           aws-region: us-east-1
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
+      - uses: ruby/setup-ruby@v1
       - name: Install gems
         run: |
           bundle config set deployment true
