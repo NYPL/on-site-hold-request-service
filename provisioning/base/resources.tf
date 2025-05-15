@@ -37,7 +37,7 @@ resource "aws_lambda_function" "lambda_instance" {
   handler       = "app.handle_event"
   memory_size   = 128
   role          = "arn:aws:iam::946183545209:role/lambda-full-access"
-  runtime       = "ruby2.7"
+  runtime       = "ruby3.3"
   timeout       = 60
 
   # Location of the zipped code in S3:
