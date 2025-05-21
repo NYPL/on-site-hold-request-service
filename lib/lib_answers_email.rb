@@ -179,14 +179,15 @@ class LibAnswersEmail
   end
 
   ##
-  # Attempt to send the email through SES
+  # Attempt to send the email through Sendgrid
   #
-  # Will raise InternalError if error sending email via SES
+  # Will raise InternalError if error sending email via Sendgrid
   def send
     request_body = sendgrid_email_payload
 
     sendgrid = SendGrid::API.new(api_key: KmsClient.new.decrypt(ENV['SENDGRID_API_KEY']))
     response = sendgrid.client.mail._('send').post(request_body: request_body)
+    $logger.debug "Sendgrid response: #{response.status_code} '#{response.body}'"
     if response.status_code.nil? || response.status_code.to_i >= 300
       $logger.error "Failed to send LibAnswers email via Sendgrid: #{response.status_code} '#{response.body}'"
     end

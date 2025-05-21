@@ -23,7 +23,7 @@ data "archive_file" "lambda_zip" {
 
 # Upload the zipped app to S3:
 resource "aws_s3_object" "uploaded_zip" {
-  bucket = "nypl-travis-builds-${var.environment}"
+  bucket = "nypl-github-actions-builds-${var.environment}"
   key    = "on-site-hold-request-service-${var.environment}-dist.zip"
   acl    = "private"
   source = data.archive_file.lambda_zip.output_path
@@ -37,7 +37,7 @@ resource "aws_lambda_function" "lambda_instance" {
   handler       = "app.handle_event"
   memory_size   = 128
   role          = "arn:aws:iam::946183545209:role/lambda-full-access"
-  runtime       = "ruby2.7"
+  runtime       = "ruby3.3"
   timeout       = 60
 
   # Location of the zipped code in S3:
