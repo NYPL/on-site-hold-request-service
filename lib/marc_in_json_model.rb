@@ -29,7 +29,7 @@ module MarcInJsonModel
     if (!field.nil? && subfield_tag)
       subfield = field['subfields']
         .find { |subfield| subfield['tag'] == subfield_tag.to_s }
-      subfield['content']
+      subfield['content'] unless subfield.nil?
     else
       field
     end
