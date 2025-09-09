@@ -8,6 +8,9 @@ describe Bib do
 
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/14468362")
       .to_return(body: File.read('./spec/fixtures/bib-14468362.json'))
+
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/15637111")
+      .to_return(body: File.read('./spec/fixtures/bib-15637111.json'))
   end
 
   it 'instantiates a Bib by id' do
@@ -24,5 +27,9 @@ describe Bib do
 
   it 'extracts standard_number' do
     expect(Bib.by_id('sierra-nypl', 14468362).standard_number).to eq('fake-standard-number')
+  end
+
+  it 'returns nil for bib w/o standard_number' do
+    expect(Bib.by_id('sierra-nypl', 15637111).standard_number).to be_nil
   end
 end
