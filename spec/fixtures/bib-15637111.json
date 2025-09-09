@@ -1,0 +1,684 @@
+{
+   "data" : {
+      "author" : "",
+      "bibLevel" : {
+         "code" : "m",
+         "value" : "MONOGRAPH"
+      },
+      "catalogDate" : "2004-08-30T00:00:00",
+      "controlNumber" : "NYPG88-B231",
+      "country" : {
+         "code" : "gw ",
+         "name" : "Germany"
+      },
+      "createdDate" : "2008-12-20T05:51:06",
+      "deleted" : false,
+      "deletedDate" : null,
+      "fixedFields" : {
+         "107" : {
+            "display" : null,
+            "label" : "MARC Type",
+            "value" : " "
+         },
+         "24" : {
+            "display" : "German",
+            "label" : "Language",
+            "value" : "ger"
+         },
+         "25" : {
+            "display" : null,
+            "label" : "Skip",
+            "value" : "0"
+         },
+         "26" : {
+            "display" : null,
+            "label" : "Location",
+            "value" : "multi"
+         },
+         "27" : {
+            "display" : null,
+            "label" : "COPIES",
+            "value" : "2"
+         },
+         "28" : {
+            "display" : null,
+            "label" : "Cat. Date",
+            "value" : "2004-08-30"
+         },
+         "29" : {
+            "display" : "MONOGRAPH",
+            "label" : "Bib Level",
+            "value" : "m"
+         },
+         "30" : {
+            "display" : "BOOK/TEXT",
+            "label" : "Material Type",
+            "value" : "a  "
+         },
+         "31" : {
+            "display" : null,
+            "label" : "Bib Code 3",
+            "value" : "-"
+         },
+         "80" : {
+            "display" : null,
+            "label" : "Record Type",
+            "value" : "b"
+         },
+         "81" : {
+            "display" : null,
+            "label" : "Record Number",
+            "value" : "15637111"
+         },
+         "83" : {
+            "display" : null,
+            "label" : "Created Date",
+            "value" : "2008-12-20T05:51:06Z"
+         },
+         "84" : {
+            "display" : null,
+            "label" : "Updated Date",
+            "value" : "2022-08-03T07:09:48Z"
+         },
+         "85" : {
+            "display" : null,
+            "label" : "No. of Revisions",
+            "value" : "11"
+         },
+         "86" : {
+            "display" : null,
+            "label" : "Agency",
+            "value" : "1"
+         },
+         "89" : {
+            "display" : "Germany",
+            "label" : "Country",
+            "value" : "gw "
+         },
+         "98" : {
+            "display" : null,
+            "label" : "PDATE",
+            "value" : "2022-08-02T07:12:16Z"
+         }
+      },
+      "id" : "15637111",
+      "lang" : {
+         "code" : "ger",
+         "name" : "German"
+      },
+      "locations" : [
+         {
+            "code" : "maf",
+            "name" : "SASB - Dorot Jewish Division Rm 111"
+         },
+         {
+            "code" : "mal",
+            "name" : "SASB - Service Desk Rm 315"
+         }
+      ],
+      "materialType" : {
+         "code" : "a  ",
+         "value" : "BOOK/TEXT"
+      },
+      "normAuthor" : "",
+      "normTitle" : "zeitgewinn messianisches denken nach franz rosenzweig",
+      "nyplSource" : "sierra-nypl",
+      "nyplType" : "bib",
+      "publishYear" : 1987,
+      "standardNumbers" : [
+         "3782005643"
+      ],
+      "suppressed" : false,
+      "title" : "Zeitgewinn : messianisches Denken nach Franz Rosenzweig",
+      "updatedDate" : "2022-08-03T07:09:48",
+      "varFields" : [
+         {
+            "content" : null,
+            "fieldTag" : "b",
+            "ind1" : "1",
+            "ind2" : " ",
+            "marcTag" : "700",
+            "subfields" : [
+               {
+                  "content" : "Fuchs, Gotthard,",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "1938-",
+                  "tag" : "d"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "b",
+            "ind1" : "1",
+            "ind2" : " ",
+            "marcTag" : "700",
+            "subfields" : [
+               {
+                  "content" : "Henrix, Hans Hermann,",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "1941-",
+                  "tag" : "d"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "b",
+            "ind1" : "1",
+            "ind2" : " ",
+            "marcTag" : "700",
+            "subfields" : [
+               {
+                  "content" : "Rosenzweig, Franz,",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "1886-1929.",
+                  "tag" : "d"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "b",
+            "ind1" : "2",
+            "ind2" : " ",
+            "marcTag" : "710",
+            "subfields" : [
+               {
+                  "content" : "Bischöfliche Akademie (Aachen, Germany)",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "b",
+            "ind1" : "2",
+            "ind2" : " ",
+            "marcTag" : "710",
+            "subfields" : [
+               {
+                  "content" : "Rabanus Maurus-Akademie.",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "c",
+            "ind1" : "8",
+            "ind2" : " ",
+            "marcTag" : "852",
+            "subfields" : [
+               {
+                  "content" : "*PGZ 05-4617",
+                  "tag" : "h"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "d",
+            "ind1" : "1",
+            "ind2" : "0",
+            "marcTag" : "600",
+            "subfields" : [
+               {
+                  "content" : "Rosenzweig, Franz,",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "1886-1929",
+                  "tag" : "d"
+               },
+               {
+                  "content" : "Congresses.",
+                  "tag" : "v"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "d",
+            "ind1" : " ",
+            "ind2" : "0",
+            "marcTag" : "650",
+            "subfields" : [
+               {
+                  "content" : "Judaism",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "Doctrines",
+                  "tag" : "x"
+               },
+               {
+                  "content" : "Congresses.",
+                  "tag" : "v"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "d",
+            "ind1" : " ",
+            "ind2" : "0",
+            "marcTag" : "650",
+            "subfields" : [
+               {
+                  "content" : "Judaism",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "Relations",
+                  "tag" : "x"
+               },
+               {
+                  "content" : "Christianity",
+                  "tag" : "x"
+               },
+               {
+                  "content" : "Congresses.",
+                  "tag" : "v"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "d",
+            "ind1" : " ",
+            "ind2" : "0",
+            "marcTag" : "650",
+            "subfields" : [
+               {
+                  "content" : "Christianity and other religions",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "Judaism",
+                  "tag" : "x"
+               },
+               {
+                  "content" : "Congresses.",
+                  "tag" : "v"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "e",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "250",
+            "subfields" : [
+               {
+                  "content" : "1. Aufl.",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "i",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "020",
+            "subfields" : [
+               {
+                  "content" : "3782005643",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "l",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "010",
+            "subfields" : [
+               {
+                  "content" : "87210645",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "l",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "035",
+            "subfields" : [
+               {
+                  "content" : "DCLC87210645-B",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "l",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "947",
+            "subfields" : [
+               {
+                  "content" : "def 88 sss-1228",
+                  "tag" : "b"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "l",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "035",
+            "subfields" : [
+               {
+                  "content" : "(OCoLC)17954237",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "n",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "500",
+            "subfields" : [
+               {
+                  "content" : "Slightly revised papers from a meeting on the occasion of Franz Rosenzweig's 100th birthday, held May 19-21, 1987, in Aachen, Kerkrader Kongresszentrum Rolduc, sponsored by the Bischöfliche Akademie des Bistums Aachen and the Katholische Akademie Rabanus Maurus of the Dioceses in Fulda, Limburg and Mainz.",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "n",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "504",
+            "subfields" : [
+               {
+                  "content" : "Includes bibliographies and index.",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "n",
+            "ind1" : "0",
+            "ind2" : " ",
+            "marcTag" : "505",
+            "subfields" : [
+               {
+                  "content" : "Des Anderen Bedürfen / Gotthard Fuchs, Hans Hermann Henrix -- Zwischen zwei Welten / Emmanuel Levinas -- Hegel beim Wort genommen / Stéphane Mosès -- Der Tod als Krisis geschichtlicher Synthèse / Heinz-Jürgen Görtz -- Das Gebet stiftet die menschliche Weltordnung / Bernhard Casper -- Von der Zeit zur Ewigkeit / Stéphane Mosès -- Judentum und Christentum nach Franz Rosenzweig.",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : "NYPG88-B231",
+            "fieldTag" : "o",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "001",
+            "subfields" : null
+         },
+         {
+            "content" : null,
+            "fieldTag" : "p",
+            "ind1" : "0",
+            "ind2" : " ",
+            "marcTag" : "260",
+            "subfields" : [
+               {
+                  "content" : "Frankfurt am Main :",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "J. Knecht,",
+                  "tag" : "b"
+               },
+               {
+                  "content" : "1987.",
+                  "tag" : "c"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "q",
+            "ind1" : "8",
+            "ind2" : " ",
+            "marcTag" : "852",
+            "subfields" : [
+               {
+                  "content" : "*PGZ 05-4617",
+                  "tag" : "h"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "r",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "300",
+            "subfields" : [
+               {
+                  "content" : "190 p. ;",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "21 cm.",
+                  "tag" : "c"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "t",
+            "ind1" : "0",
+            "ind2" : "0",
+            "marcTag" : "245",
+            "subfields" : [
+               {
+                  "content" : "Zeitgewinn :",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "messianisches Denken nach Franz Rosenzweig /",
+                  "tag" : "b"
+               },
+               {
+                  "content" : "herausgegeben von Gotthard Fuchs und Hans Hermann Henrix.",
+                  "tag" : "c"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "v",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "959",
+            "subfields" : [
+               {
+                  "content" : ".b73203592",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "08-29-07",
+                  "tag" : "b"
+               },
+               {
+                  "content" : "06-11-03",
+                  "tag" : "c"
+               }
+            ]
+         },
+         {
+            "content" : "CStRLIN",
+            "fieldTag" : "y",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "003",
+            "subfields" : null
+         },
+         {
+            "content" : "20040423160017.0",
+            "fieldTag" : "y",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "005",
+            "subfields" : null
+         },
+         {
+            "content" : "880304s1987    gw       b    11100 ger  cam a ",
+            "fieldTag" : "y",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "008",
+            "subfields" : null
+         },
+         {
+            "content" : null,
+            "fieldTag" : "y",
+            "ind1" : "0",
+            "ind2" : " ",
+            "marcTag" : "050",
+            "subfields" : [
+               {
+                  "content" : "BM755.R6",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "Z45 1987",
+                  "tag" : "b"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "y",
+            "ind1" : "0",
+            "ind2" : " ",
+            "marcTag" : "908",
+            "subfields" : [
+               {
+                  "content" : "BM755.R6",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "Z45 1987",
+                  "tag" : "b"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "y",
+            "ind1" : "0",
+            "ind2" : " ",
+            "marcTag" : "082",
+            "subfields" : [
+               {
+                  "content" : "296.3/092/4",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "19",
+                  "tag" : "2"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "y",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "997",
+            "subfields" : [
+               {
+                  "content" : "hj",
+                  "tag" : "a"
+               },
+               {
+                  "content" : "08-30-04",
+                  "tag" : "b"
+               },
+               {
+                  "content" : "m",
+                  "tag" : "c"
+               },
+               {
+                  "content" : "a",
+                  "tag" : "d"
+               },
+               {
+                  "content" : "-",
+                  "tag" : "e"
+               },
+               {
+                  "content" : "ger",
+                  "tag" : "f"
+               },
+               {
+                  "content" : "gw ",
+                  "tag" : "g"
+               },
+               {
+                  "content" : "0",
+                  "tag" : "h"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "y",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "991",
+            "subfields" : [
+               {
+                  "content" : "17954237",
+                  "tag" : "y"
+               }
+            ]
+         },
+         {
+            "content" : null,
+            "fieldTag" : "y",
+            "ind1" : " ",
+            "ind2" : " ",
+            "marcTag" : "910",
+            "subfields" : [
+               {
+                  "content" : "RL",
+                  "tag" : "a"
+               }
+            ]
+         },
+         {
+            "content" : "00000cam  2200373 a 4500",
+            "fieldTag" : "_",
+            "ind1" : null,
+            "ind2" : null,
+            "marcTag" : null,
+            "subfields" : null
+         }
+      ]
+   },
+   "statusCode" : 200
+}
