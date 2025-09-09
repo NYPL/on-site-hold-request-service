@@ -153,7 +153,7 @@ class OnSiteHoldRequest
     $logger.debug "self.sierra_client.post response: #{response.code} #{response.body}"
 
     if response.error?
-      if response.body && response.body['description'].include?('This record is not available')
+      if response.body && resopnse.body.is_a?(Hash) && response.body['description'].include?('This record is not available')
         # Failed due to mysterious "This record is not available" error
         raise SierraRecordUnavailableError, "Item unavailable in Sierra for patron #{patron_id}, item #{@data['record']}, pickup #{pickup_location}: #{response.code}: #{response.body}"
       elsif response.body && response.body['description'].include?('Request denied - already on hold for or checked out to you.')
