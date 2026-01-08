@@ -32,7 +32,7 @@ GEM
     nypl_sierra_api_client (1.1.0)
     ostruct (0.6.1)
     public_suffix (6.0.2)
-    rexml (3.4.1)
+    rexml (3.4.2)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
